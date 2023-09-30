@@ -1,0 +1,128 @@
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 80px;
+    padding: 0.4rem 0.8rem;
+    transition: all 0.5s ease;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    z-index: 2;
+    background-color: green;
+  }
+  
+  .sidebar.active {
+    width: 250px;
+  }
+  
+  .sidebar #btn {
+    position: absolute;
+    color: white;
+    top: .4rem;
+    left: 50%;
+    font-size: 1.2rem;
+    line-height: 50px;
+    transform: translateX(-50%);
+    cursor: pointer;
+  }
+  
+  .sidebar.active #btn {
+    left: 90%;
+  }
+  
+  .sidebar .top .logo {
+    color: white;
+    display: flex;
+    font-display: inherit;
+    height: 50px;
+    width: 100%;
+    align-items: center;
+    pointer-events: none;
+    opacity: 0;
+  }
+  
+  .sidebar.active .top .logo{
+    opacity: 1;
+    font-weight: bold;
+  }
+  
+  .top .logo i {
+    font-size: 2rem;
+    margin-right: 5px;
+  }
+  
+  .bold{
+    font-weight: 600;
+  }
+  
+  .sidebar p {
+    opacity: 0;
+  }
+  .sidebar.active p {
+    opacity: 1;
+  }
+  
+  .sidebar ul li {
+    position: relative;
+    list-style-type: none;
+    height: 50px;
+    width: 90%;
+    margin: 0.8rem auto;
+    line-height: 50px;
+    text-decoration: none;
+  }
+  
+  .sidebar ul li a {
+    color: white;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    border-radius: 0.8rem;
+  }
+  
+  .sidebar ul li a:hover {
+    background-color: white;
+    color: green;
+  }
+  
+  .sidebar ul li a i {
+    min-width: 50px;
+    text-align: center;
+    height: 50x;
+    border-radius: 12px;
+    line-height: 50px;
+  }
+  
+  .sidebar .nav-item {
+    opacity: 0;
+  
+  }
+  
+  .sidebar.active .nav-item {
+    opacity: 1;
+  }
+  
+  ul {
+    padding-left: 0;
+  }
+
+  .sidebar ul li a.nav-item1.active {
+    background-color: white;
+    color: green; 
+    font-weight: bold;
+  }
+  
+  .sidebar ul li a.nav-item1.active:hover {
+    background-color: white;
+  }
+  .nav-item1{
+    margin: 2em 0 2em 0;
+  }
+  @media (max-width: 768px) {
+    .pad{
+      padding-left: 80px;
+    }
+  }
+  .star {
+    color: rgb(255, 216, 23);
+}
