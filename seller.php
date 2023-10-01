@@ -91,19 +91,19 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row mb-3">
             <div class="col-md-8">
-                <div class="card shadow" style="height: 35.5em; display:block; overflow-y:scroll;">
+                <div class="card shadow mb-2" style="height: 17.5em; display:block; overflow-y:scroll;">
                     <div class="table">
                         <table class="table table-responsive">
                             <thead class="text-center">
                                 <tr>
-                                    <td colspan="3">PRODUCT OUT CART</td>
+                                    <td colspan="3">PRODUCTS ON CART</td>
                                 </tr>
                             </thead>
                             <thead class="table-light text-center">
                                 <tr>
-                                    <td>NAME</td>
+                                    <td>BUYER</td>
                                     <td>MINIMUM ORDER</td>
                                     <td>PRODUCT STOCK LEFT</td>
                                 </tr>
@@ -125,11 +125,50 @@
                         </table>
                     </div>
                 </div>
+                <div class="card shadow">
+                    <div class="table">
+                        <table class="table table-responsive">
+                            <thead class="text-center">
+                                <tr>
+                                    <td colspan="3">PRODUCTS ON CART</td>
+                                </tr>
+                            </thead>
+                            <thead class="table-light text-center">
+                                <tr>
+                                    <td>BUYER</td>
+                                    <td>PRODUCT</td>
+                                    <td>QTY</td>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center">
+                            <?php
+                                // Assuming you have a database connection established earlier
+                                $sql = "SELECT c.order_qty, u.fullname, p.product_name
+                                        FROM cart c
+                                        INNER JOIN users u ON c.user_id = u.user_id
+                                        INNER JOIN products p ON c.product_id = p.product_id
+                                        WHERE p.seller_id = $user_id"; 
+                                $result = mysqli_query($conn, $sql);
+                                foreach ($result as $row) {
+                            ?>
+                                <tr class="table-danger">
+                                    <td><?php echo $row['fullname']; ?></td>
+                                    <td><?php echo $row['product_name']; ?></td>
+                                    <td><?php echo $row['order_qty']; ?></td>
+                                </tr>
+                            <?php
+                                }
+                            ?>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
             </div>
             <div class="col-md-4">
-                <div class="card shadow"  style="height: 30em;">
+                <div class="card shadow dash-scroll"  style="height: 35.6em; display:block; overflow-y:scroll;">
                     <div class="table">
-                        <table class="table table-responsive dash-scroll">
+                        <table class="table table-responsive">
                             <thead class="text-center">
                                 <tr>
                                     <td colspan="3">PRODUCT OUT OF STOCK</td>
