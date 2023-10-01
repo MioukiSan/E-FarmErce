@@ -14,7 +14,15 @@
     <div class="container">
         <?php require_once './includes/sidenav.php';?>
         <div class="row">
-            <h1 style="padding-top: 10px;">ORDERS LIST</h1>
+            <div class="col-10">
+                <h1 style="padding-top: 10px;">ORDER LIST</h1>
+            </div>
+            <div class="col-2 d-flex float-end">
+                <button type="button"style=" color: green;" class="btn position-relative m-2" data-bs-toggle="offcanvas" data-bs-target="#chat" aria-controls="offcanvasRight">
+                <ion-icon size="large" name="chatbubbles-outline"></ion-icon></button>
+                <?php require_once './extension/notif_seller.php';?>
+            </div>
+        </div>
             <div class="col">
                 <form method="POST" action="">
                 <button type="submit" name="confirmed" class="float-end" style="background-color: transparent; border: 2px solid green; color: green; margin-left: 5px;">CONFIRMED</button>
@@ -37,29 +45,29 @@
                     <tbody class="text-center">
                         <?php
                             if(isset($_GET['delivered'])){
-                                $query = "SELECT DISTINCT order_reference, order_status, date_place, transact_mode, order_rating, order_comm FROM orders WHERE seller_id = '$user_id' AND order_status = 'Delivered'";
+                                $query = "SELECT DISTINCT order_reference, order_status, date_place, transact_mode, order_rating, order_comm FROM orders WHERE seller_id = '$user_id' AND order_status = 'Delivered' ORDER BY date_place DESC";
                                 $result = mysqli_query($conn, $query);
                             }elseif (isset($_GET['trancode'])) {
                                 $code = $_GET['trancode'];
-                                $query = "SELECT DISTINCT order_reference, order_status, date_place, transact_mode, order_rating, order_comm FROM orders WHERE user_id = '$user_idS' AND order_reference = '$code'";
+                                $query = "SELECT DISTINCT order_reference, order_status, date_place, transact_mode, order_rating, order_comm FROM orders WHERE seller_id = '$user_idS' AND order_reference = '$code'";
                                 $result = mysqli_query($conn, $query);
                             }elseif(isset($_POST['confirmed'])){
-                                $query = "SELECT DISTINCT order_reference, order_status, date_place, transact_mode, order_rating, order_comm FROM orders WHERE seller_id = '$user_id' AND order_status = 'Confirmed'";
+                                $query = "SELECT DISTINCT order_reference, order_status, date_place, transact_mode, order_rating, order_comm FROM orders WHERE seller_id = '$user_id' AND order_status = 'Confirmed' ORDER BY date_place DESC";
                                 $result = mysqli_query($conn, $query);
                             }elseif(isset($_POST['cancel'])){
-                                $query = "SELECT DISTINCT order_reference, order_status, date_place, transact_mode, order_rating, order_comm FROM orders WHERE seller_id = '$user_id' AND order_status = 'Cancelled'";
+                                $query = "SELECT DISTINCT order_reference, order_status, date_place, transact_mode, order_rating, order_comm FROM orders WHERE seller_id = '$user_id' AND order_status = 'Cancelled' ORDER BY date_place DESC";
                                 $result = mysqli_query($conn, $query);
                             }elseif(isset($_POST['pick'])){
-                                $query = "SELECT DISTINCT order_reference, order_status, date_place, transact_mode, order_rating, order_comm FROM orders WHERE seller_id = '$user_id' AND order_status = 'Picked Up'";
+                                $query = "SELECT DISTINCT order_reference, order_status, date_place, transact_mode, order_rating, order_comm FROM orders WHERE seller_id = '$user_id' AND order_status = 'Picked Up' ORDER BY date_place DESC";
                                 $result = mysqli_query($conn, $query);
                             }elseif(isset($_POST['pending'])){
-                                $query = "SELECT DISTINCT order_reference, order_status, date_place, transact_mode, order_rating, order_comm FROM orders WHERE seller_id = '$user_id'AND order_status = 'Pending'";
+                                $query = "SELECT DISTINCT order_reference, order_status, date_place, transact_mode, order_rating, order_comm FROM orders WHERE seller_id = '$user_id'AND order_status = 'Pending' ORDER BY date_place DESC";
                                 $result = mysqli_query($conn, $query);
                             }elseif(isset($_POST['all'])){
-                                $query = "SELECT DISTINCT order_reference, order_status, date_place, transact_mode, order_rating, order_comm FROM orders WHERE seller_id = '$user_id'";
+                                $query = "SELECT DISTINCT order_reference, order_status, date_place, transact_mode, order_rating, order_comm FROM orders WHERE seller_id = '$user_id' ORDER BY date_place DESC";
                                 $result = mysqli_query($conn, $query);
                             }else{
-                            $query = "SELECT DISTINCT order_reference, order_status, date_place, transact_mode, order_rating, order_comm FROM orders WHERE seller_id = '$user_id' AND order_status != 'Cancelled'";
+                            $query = "SELECT DISTINCT order_reference, order_status, date_place, transact_mode, order_rating, order_comm FROM orders WHERE seller_id = '$user_id' AND order_status != 'Cancelled' ORDER BY date_place DESC";
                             $result = mysqli_query($conn, $query);
                             }
                             foreach($result as $row){

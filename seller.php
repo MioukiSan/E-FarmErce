@@ -16,10 +16,6 @@
     $row4 = mysqli_fetch_assoc($re2);
     $count3 = $row4['count3']; 
 
-    $query2 = "SELECT COUNT(*) AS count1 FROM seller_notif WHERE seller_id = '$user_id' AND notif_sts = 'Unread'";
-    $res1 = mysqli_query($conn, $query2);
-    $row2 = mysqli_fetch_assoc($res1);
-    $count1 = $row2['count1'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -102,7 +98,7 @@
                         <table class="table table-responsive">
                             <thead class="text-center">
                                 <tr>
-                                    <td colspan="3">PRODUCT OUT OF STOCK</td>
+                                    <td colspan="3">PRODUCT OUT CART</td>
                                 </tr>
                             </thead>
                             <thead class="table-light text-center">
@@ -131,13 +127,36 @@
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card shadow" style="height: 35.2em;">
-                    <div class="row text-center">
-                        <button class="btn border" style="width: 50%;" name="">ON CART</button>
-                        <button class="btn border" style="width: 50%;" name="">ORDERS</button>
-                    </div>
-                    <div class="row">
-
+                <div class="card shadow"  style="height: 30em;">
+                    <div class="table">
+                        <table class="table table-responsive dash-scroll">
+                            <thead class="text-center">
+                                <tr>
+                                    <td colspan="3">PRODUCT OUT OF STOCK</td>
+                                </tr>
+                            </thead>
+                            <thead class="table-light text-center">
+                                <tr>
+                                    <td>NAME</td>
+                                    <td>PRODUCT STOCK LEFT</td>
+                                    <td></td>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center">
+                            <?php
+                                $sql = "SELECT * FROM products WHERE seller_id = '$user_id' AND product_stock < min_order AND product_status = 'On Sale' 
+                                    ORDER BY product_stock ASC";
+                                $result = mysqli_query($conn, $sql);
+                                foreach($result as $row){
+                            ?>
+                                <tr class="table-danger">
+                                    <td><?php echo $row['product_name'] ?></td>
+                                    <td><?php echo $row['product_stock'] ?></td>
+                                    <td></td>
+                                </tr>
+                                <?php } ?>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
