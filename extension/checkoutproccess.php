@@ -65,7 +65,7 @@ foreach ($distinctSellerIds as $sellerId) {
             $updateStockQuery = "UPDATE products SET product_stock = product_stock - $order_qty WHERE product_id = '$productId'";
             mysqli_query($conn, $updateStockQuery);
 
-            $notifInfo = "Your products with transact order $orderRef have been checked out with total of $subtotal.";
+            $notifInfo = "Your products with transact order " . $orderRef . " have been checked out with total of " . CURRENCY . number_format($subtotal, 2) . ".";
             $insertNotifQuery = "INSERT INTO seller_notif (seller_id, not_info, transact_code, product_id)
                          VALUES ('$sellerId', '$notifInfo', '$orderRef', $productId)";
             mysqli_query($conn, $insertNotifQuery);

@@ -14,7 +14,7 @@
     $query4 = "SELECT COUNT(*) AS count3 FROM products WHERE seller_id = '$user_id' AND product_status = 'On Sale'";
     $re2 = mysqli_query($conn, $query4);
     $row4 = mysqli_fetch_assoc($re2);
-    $count2 = $row4['count3']; 
+    $count3 = $row4['count3']; 
 
     $query2 = "SELECT COUNT(*) AS count1 FROM seller_notif WHERE seller_id = '$user_id' AND notif_sts = 'Unread'";
     $res1 = mysqli_query($conn, $query2);
@@ -85,7 +85,7 @@
                             <div class="col mr-2">
                                 <div class="font-weight-bold text-warning text-uppercase mb-1" style="font-size: small;">
                                     PRODUCT ON SALE</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800" style="font-size: x-large;"><?php echo $count2; ?></div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800" style="font-size: x-large;"><?php echo $count3; ?></div>
                             </div>
                             <div class="col-auto text-warning">
                                 <ion-icon size="large" name="trending-up-outline"></ion-icon>    

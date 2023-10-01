@@ -11,10 +11,12 @@
       <h3 class="text-center" id="offcanvasRightLabel1">NOTIFICATIONS<ion-icon name="notifications-outline"></ion-icon></h3>
     </div>
     <div class="offcanvas-body bg-light">
-        <form action="./extension/read.php" method="POST">
-            <input type="hidden" name="id" value="<?php echo $user_id ?>">
-            <button class="btn float-end" type="submit" name="readAll">Read All</button>
-        </form>
+        <div class="row">
+            <form action="./extension/read.php" method="POST">
+                <input type="hidden" name="id" value="<?php echo $user_id ?>">
+                <button class="btn float-end" type="submit" name="readAll">Read All</button>
+            </form>
+        </div>
     <?php
         $NotifSl = "SELECT * FROM seller_notif WHERE seller_id = '$user_id' ORDER BY notif_date DESC";
         $NotifSLRes = mysqli_query($conn, $NotifSl);
@@ -23,9 +25,19 @@
             $message = $nt['not_info'];
             $date = $nt['notif_date'];
             $stat = $nt['notif_sts'];
+
+        if(is_null($nt['transact_code'])){
         ?>
-        <form action="" method="POST">
+        <div class="card mb-2" style=" background-color: <?php if($stat == 'Unread'){ echo 'rgb(221, 246, 221);';}else{ echo 'white';} ?>">
+            <div class="card-body">
+                <span><?php echo $date ?></span>
+                <p><?php echo $message ?></p>
+            </div>
+        </div>
+        <?php } else{ ?>
+        <form action="../extension/seller_notif_update.php" method="POST">
             <input type="hidden" name="id" value="<?php echo $nt['notif_seller_id'] ?>">
+            <input type="hidden" name="transact" value="<?php echo $nt['transact_code'] ?>">
             <button type="submit" name="read" class="btn">
               <div class="card mb-2" style=" background-color: <?php if($stat == 'Unread'){ echo 'rgb(221, 246, 221);';}else{ echo 'white';} ?>">
                   <div class="card-body">
@@ -34,6 +46,7 @@
                   </div>
               </div>
             </button>
+            <?php } ?>
         </form>
     <?php } ?>
     </div>

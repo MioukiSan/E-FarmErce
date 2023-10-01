@@ -36,9 +36,12 @@
                     </thead>
                     <tbody class="text-center">
                         <?php
-
-                            if(isset($_POST['delivered'])){
+                            if(isset($_GET['delivered'])){
                                 $query = "SELECT DISTINCT order_reference, order_status, date_place, transact_mode, order_rating, order_comm FROM orders WHERE seller_id = '$user_id' AND order_status = 'Delivered'";
+                                $result = mysqli_query($conn, $query);
+                            }elseif (isset($_GET['trancode'])) {
+                                $code = $_GET['trancode'];
+                                $query = "SELECT DISTINCT order_reference, order_status, date_place, transact_mode, order_rating, order_comm FROM orders WHERE user_id = '$user_idS' AND order_reference = '$code'";
                                 $result = mysqli_query($conn, $query);
                             }elseif(isset($_POST['confirmed'])){
                                 $query = "SELECT DISTINCT order_reference, order_status, date_place, transact_mode, order_rating, order_comm FROM orders WHERE seller_id = '$user_id' AND order_status = 'Confirmed'";

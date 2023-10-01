@@ -40,7 +40,7 @@ if (isset($_POST['addcart'])) {
                                      VALUES ($seller_id, $product_id, '$notif_info')";
 
                 if ($conn->query($insert_notif_sql) === TRUE) {
-                    echo "<script>alert('Item quantity updated in cart and notification sent to seller!'); window.location.href = document.referrer;</script>";
+                    echo "<script>alert('Item quantity updated in cart!'); window.location.href = document.referrer;</script>";
                     exit;
                 } else {
                     echo "Error inserting notification: " . $conn->error;
@@ -68,7 +68,7 @@ if (isset($_POST['addcart'])) {
                                          VALUES ($seller_id, $product_id, '$notif_info')";
 
                     if ($conn->query($insert_notif_sql) === TRUE) {
-                        echo "<script>alert('Item added to cart and notification sent to seller!'); window.location.href = document.referrer;</script>";
+                        echo "<script>alert('Item added to cart!'); window.location.href = document.referrer;</script>";
                         exit;
                     } else {
                         echo "Error inserting notification: " . $conn->error;
