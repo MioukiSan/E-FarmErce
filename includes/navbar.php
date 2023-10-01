@@ -441,6 +441,10 @@ document.addEventListener("DOMContentLoaded", function() {
       <h3 class="text-center" id="offcanvasRightLabel1">NOTIFICATIONS<ion-icon name="notifications-outline"></ion-icon></h3>
     </div>
     <div class="offcanvas-body bg-light">
+    <form action="../extension/read_notif.php" method="POST">
+            <input type="hidden" name="id" value="<?php echo $user_id ?>">
+            <button class="btn float-end" type="submit" name="readAll">Read All</button>
+        </form>
     <?php
         $NotifQ = "SELECT * FROM notifications WHERE buyer_id = '$user_id' ORDER BY date_mess DESC";
         $NotifRes = mysqli_query($conn, $NotifQ);

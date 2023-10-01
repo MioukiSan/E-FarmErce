@@ -15,6 +15,11 @@
     $re2 = mysqli_query($conn, $query4);
     $row4 = mysqli_fetch_assoc($re2);
     $count2 = $row4['count3']; 
+
+    $query2 = "SELECT COUNT(*) AS count1 FROM seller_notif WHERE seller_id = '$user_id' AND notif_sts = 'Unread'";
+    $res1 = mysqli_query($conn, $query2);
+    $row2 = mysqli_fetch_assoc($res1);
+    $count1 = $row2['count1'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -35,10 +40,9 @@
                 <h1 style="padding-top: 10px;">SELLER DASHBOARD</h1>
             </div>
             <div class="col-2 d-flex float-end">
-                <button type="button"style=" color: green;" class="btn position-relative m-2" data-bs-toggle="offcanvas" data-bs-target="#notif" aria-controls="offcanvasRight">
+                <button type="button"style=" color: green;" class="btn position-relative m-2" data-bs-toggle="offcanvas" data-bs-target="#chat" aria-controls="offcanvasRight">
                 <ion-icon size="large" name="chatbubbles-outline"></ion-icon></button>
-                <button type="button"style=" color: green;" class="btn position-relative m-2" data-bs-toggle="offcanvas" data-bs-target="#notif" aria-controls="offcanvasRight">
-                <ion-icon size="large" name="notifications-outline"></ion-icon></button>
+                <?php require_once './extension/notif_seller.php';?>
             </div>
         </div>
         <div class="row">
