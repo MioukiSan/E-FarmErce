@@ -22,13 +22,14 @@ if (isset($_POST['login'])) {
             if ($password === $stored_password) {
                 $_SESSION['user_id'] = $row['user_id'];
                 $_SESSION['email'] = $row['email'];
+                $_SESSION['fullname'] = $row['fullname'];
                 $_SESSION['user_type'] = $user_type;
 
                 $_SESSION['login_status'] = 'success';
                 if ($user_type === 'Admin') {
                     header("location: ../dashboard_admin.php");
                 } elseif ($user_type === 'Seller') {
-                    header("location: ../index.php");
+                    header("location: ../seller.php");
                 } elseif ($user_type === 'Buyer') {
                     header("location: ../index.php");
                 } else {

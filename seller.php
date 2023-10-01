@@ -30,11 +30,13 @@
 <body class="pad">
     <div class="container">
         <?php require_once './includes/sidenav.php';?>
-        <div class="row d-flex">
+        <div class="row">
             <div class="col-10">
                 <h1 style="padding-top: 10px;">SELLER DASHBOARD</h1>
             </div>
-            <div class="col-2">
+            <div class="col-2 d-flex float-end">
+                <button type="button"style=" color: green;" class="btn position-relative m-2" data-bs-toggle="offcanvas" data-bs-target="#notif" aria-controls="offcanvasRight">
+                <ion-icon size="large" name="chatbubbles-outline"></ion-icon></button>
                 <button type="button"style=" color: green;" class="btn position-relative m-2" data-bs-toggle="offcanvas" data-bs-target="#notif" aria-controls="offcanvasRight">
                 <ion-icon size="large" name="notifications-outline"></ion-icon></button>
             </div>
