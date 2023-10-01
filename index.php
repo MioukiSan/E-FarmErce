@@ -64,6 +64,7 @@
                 </div>
             </div>
             <div class="col-md-3 col-sm-3 shadow mt-5 dash-scroll justify-content-center" style="height: 35.5em; display:block; overflow-y:scroll;">
+                <div class="row">
                 <?php
                     if (isset($_GET['navsearch'])) {
                         $searchkey = $_GET['navsearch'];
@@ -146,6 +147,7 @@
                 <?php
                     }
                 ?>
+            </div>
             </div>
         </div>
     </div>
