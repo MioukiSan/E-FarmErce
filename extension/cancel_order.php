@@ -29,6 +29,12 @@ if(isset($_POST['cancel'])){
             $updateStockQuery = "UPDATE products SET product_stock = product_stock + $order_qty WHERE product_id = '$product_id'";
             mysqli_query($conn, $updateStockQuery);
         }
+
+        // Insert a notification for the seller
+        $notifInfo = "Your products with transact order $transact have been cancelled.";
+        $insertNotifQuery = "INSERT INTO seller_notif (seller_id, not_info, transact_code, product_id)
+                             VALUES ('$id', '$notifInfo', '$transact', '$product_id')";
+        mysqli_query($conn, $insertNotifQuery);
     }
 
     // Redirect the user to the previous page they accessed

@@ -441,8 +441,7 @@ document.addEventListener("DOMContentLoaded", function() {
       <h3 class="text-center" id="offcanvasRightLabel1">NOTIFICATIONS<ion-icon name="notifications-outline"></ion-icon></h3>
     </div>
     <div class="offcanvas-body bg-light">
-    <form action="../extension/readAll.php" method="POST">
-            <input type="hidden" name="id" value="<?php echo $user_id ?>">
+    <form action="./extension/readAll.php" method="POST">
             <button class="btn float-end" type="submit" name="readAll">Read All</button>
         </form>
     <?php
@@ -505,11 +504,11 @@ document.addEventListener("DOMContentLoaded", function() {
             <tbody class="text-center">
             <tr>
                   <td>
-                  <form method="POST">
+                  <!-- <form method="POST">
                         <input type="hidden" name="cart_id" value="<?= $cartId ?>">
                         <input type="hidden" name="user_id" value="<?php echo $user_id;?>">
                         <button type="submit" name="cart_delete" class="btn btn-light"><ion-icon name="trash-outline"></ion-icon></button>
-                  </form>
+                  </form> -->
                   <label>
                   <form method="POST" action="./checkout.php">
                       <input type="checkbox" class="btn" name="selected_products[]" value="<?= $cartId ?>" <?php if ($productStock < $carts['min_order'] || $carts['product_status'] == 'Deleted') {echo 'disabled';} else {echo 'checked';} ?>>
