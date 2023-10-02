@@ -16,5 +16,4 @@
     }
     
 ?>
-    <!-- $orderRef = generateOrderReference(10); // Generates a 10-character order reference
-    echo "Order Reference: $orderRef"; -->
+   
