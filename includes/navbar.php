@@ -77,6 +77,18 @@
             <?php } elseif( $info['user_type'] == 'Admin'){ ?>
               <a class="btn position-relative" data-bs-toggle="tooltip" data-bs-title="BACK TO ADMIN PAGE" style=" color: green;" href="./dashboard_admin.php"><ion-icon size="large" name="swap-horizontal-outline"></ion-icon></a>
             <?php } ?>
+            <!-- Message Icon -->
+              
+              <div class="dropdown chat-dropdown">
+              <a class="btn chat-dropdown-btn" data-user-id="<?PHP echo $user_id ?>" href="#" role="button" style="color: green;" data-bs-toggle="dropdown" aria-expanded="false">
+               <ion-icon size="large" name="chatbubble-outline"></ion-icon>
+              </a>
+              <div class="dropdown-menu chat-dropdown-list container overflow-y-scroll overflow-x-hidden">
+                
+                <!-- users will be inserted dynamically -->
+              </div>
+            </div>
+            <!-- End of Message Icon -->
             <button class="btn" style=" color: green;" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"><ion-icon size="large" name="cart-outline"></ion-icon>
             <span class="position-absolute top-40 start-170 translate-middle p-1">
               <?php echo $count ?><span class="visually-hidden">New alerts</span></button>
@@ -712,3 +724,5 @@ oldPassInput.addEventListener("input", function () {
 
 
 </script>
+
+    

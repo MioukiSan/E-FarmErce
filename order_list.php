@@ -80,11 +80,12 @@ $user_idS = $_SESSION['user_id'];
                                                 <td>PRICE</td>
                                                 <td>QTY</td>
                                                 <td>SUB AMOUNT</td>
+                                                <td>Seller</td>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php
-                                            $queryO = "SELECT product_id, order_qty, order_total FROM orders WHERE order_reference = '$order_ref' AND user_id = '$user_idS'";
+                                            $queryO = "SELECT product_id, order_qty, order_total, seller_id FROM orders WHERE order_reference = '$order_ref' AND user_id = '$user_idS'";
                                             $queryR = mysqli_query($conn, $queryO);
                                             while ($rowO = mysqli_fetch_assoc($queryR)) {
                                                 $product_id = $rowO['product_id'];
@@ -94,12 +95,18 @@ $user_idS = $_SESSION['user_id'];
                                                 while ($rowP = mysqli_fetch_assoc($queryPR)) {
                                                     // Calculate and accumulate the total for each product in the order
                                                     $totalS += $rowO['order_total'];
+                                                    $sellerId = $rowP['seller_id'];
+                                                    $sellerQuery = "SELECT fullname, address, selfie_id FROM users WHERE user_id = '$sellerId'";
+                                                    
+                                                    $sellerQueryResult = mysqli_query($conn, $sellerQuery);
+                                                    $sellerRow = mysqli_fetch_assoc($sellerQueryResult);
                                             ?>
                                                     <tr>
                                                         <td><?php echo $rowP['product_name'] ?></td>
                                                         <td><?php echo CURRENCY . number_format($rowP['product_price'], 2) ?></td>
                                                         <td><?php echo $rowO['order_qty'] ?></td>
                                                         <td><?php echo CURRENCY . number_format($rowO['order_total'], 2) ?></td>
+                                                        <td><button  data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling" class="btn py-0 chat-seller" data-seller-id='<?php echo $sellerId ?>' data-user-id='<?php echo $user_idS ?>' data-seller-data='<?php echo json_encode($sellerRow)  ?>'><?php echo $sellerRow['fullname'] ?> <i class="bi bi-chat-left-fill ms-1"></i></button></td>
                                                     </tr>
                                             <?php
                                                 }
@@ -206,6 +213,7 @@ $user_idS = $_SESSION['user_id'];
                                                                         <td><?php echo CURRENCY . number_format($rowP['product_price'], 2) ?></td>
                                                                         <td><?php echo $rowO['order_qty'] ?></td>
                                                                         <td><?php echo CURRENCY . number_format($rowO['order_total'], 2) ?></td>
+                                                                        
                                                                     </tr>
                                                             <?php
                                                                 }
@@ -217,6 +225,7 @@ $user_idS = $_SESSION['user_id'];
                                                             <td></td>
                                                             <td></td>
                                                             <td><?php echo CURRENCY . number_format($totalS, 2) ?></td>
+                                                            <td></td>
                                                         </tfoot>
                                                     </table>
                                                         Are you sure you want to cancel this order?
@@ -294,5 +303,10 @@ $user_idS = $_SESSION['user_id'];
             </div>
         </div>
     </div>
+    <?php 
+    include './includes/chat_canvas.php';
+    ?>
+    <script src="./js/chat_canvas.js"></script>
+    <script src="./js/chat_icon.js"></script>
 </body>
 </html>

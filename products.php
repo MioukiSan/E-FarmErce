@@ -297,6 +297,12 @@
             </div>
         </div>
     </div>
+
+    <?php 
+    include './includes/chat_canvas.php';
+    ?>
+    <script src="./js/chat_canvas.js"></script>
+    <script src="./js/chat_icon.js"></script>
 </body>
 <script>
     function openLoginModal(product_id1) {

@@ -181,6 +181,12 @@
             </div>
         </div>
     </div>
+    <?php 
+    include './includes/chat_canvas.php';
+    ?>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> -->
+    <!-- <script src="./js/chat_canvas.js"></script> -->
+    
 </body>
 <footer class="bg-dark text-white text-center p-4" style="margin-top: 5em; height: 5em;">
     <h6>E-FarmErce</h6>
