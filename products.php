@@ -14,13 +14,13 @@
     <?php require_once './includes/navbar.php';?>
     <div class="container">
         <div class="row mt-5">
-            <div class="col-md-9 d-inline">
+            <div class="col-6 d-inline">
                 <form action="" method="POST">
                     <button type="submit" name="sort" class="btn btn-light text-success" value="fruit">FRUITS</button>
                     <button type="submit" name="sort" class="btn btn-light text-success" value="vegetable">VEGETABLE</button>
                 </form>
             </div>
-            <div class="col-md-3">
+            <div class="col-6">
                 <form class="d-flex" action="?query"  method="GET" role="search">
                 <input class="form-control rounded-start text-success" type="search" name="searchprod" placeholder="Search products" aria-label="Search">
                 <button class="btn btn-light text-success rounded-end" type="submit">Search</button>
@@ -69,7 +69,7 @@
                     <button class="btn" type="button mx-auto" data-bs-toggle="modal" data-bs-target="#itemModal<?=$row['product_id']?>">
                         <div class="col h-100">
                             <div class="card text-start">
-                                <img  style="width: 100%; height: 12em; max-width: 450px;" src="./images/<?= $row['product_img'] ?>">
+                                <img  style="width: 100%; height: 10em; max-width: 400px;" src="./images/<?= $row['product_img'] ?>">
                                 <div class="card-body">
                                     <h5 class="card-title"><?= $row['product_name']; ?></h5>
                                     Price: <?= CURRENCY .  number_format($row['product_price'],2) ?> per kg<br>
@@ -92,6 +92,15 @@
                                             <b> Stock:</b> <?= $row['product_stock'] ?>kg<br>
                                             <b>Minimum Order :</b>  <?= $row['min_order'] ?> kg<br>
                                             <b>Product Details:<br></b>  <?= $row['product_details'] ?><br>
+                                            <?php
+                                                $seller = $row['seller_id'];
+                                                $sellerDev = "SELECT * FROM users WHERE user_id = '$seller'";
+                                                $sellerres = mysqli_query($conn, $sellerDev);
+                                                $sellerRow = mysqli_fetch_assoc($sellerres);
+                                            ?>
+                                            <b>Seller: </b><?= $sellerRow['fullname'] ?><br>
+                                            <b>Delivery Location: </b> <?= $sellerRow['delivery_area'] ?><br>
+                                            <b>Pick Up Address: </b><?= $sellerRow['pickup_address'] ?>
                                             <div class="form-group mb-3 mt-3">
                                             <form action="./extension/add_cart.php" method="POST">
                                                 <label for="qty" class="mb-3"><b>Quantity</b></label>
@@ -116,17 +125,12 @@
                             </div>
                         </div>
                     </div>
-                    <script>
-                        function openLoginModal(product_id) {
-                            $('#itemModal' + product_id).modal('hide');
-                            $('#loginModal').modal('show'); 
-                        }
-                    </script>
                 <?php } ?>
                 </div>
             </div>
             <div class="col-md-3 mt-3">
-            <h4 class="text-center bg-white text-success mt-2">HOT PRODUCTS</h4>
+                <div class="row">
+                <h4 class="text-center bg-white text-success mt-2">TRENDING NOW</h4>
             <?php 
                 $hot = "SELECT o.product_id, COUNT(*) AS order_count
                         FROM orders o
@@ -145,16 +149,16 @@
                      foreach ($resultshot as $row1) {
             ?>
                <button class="btn" type="button" data-bs-toggle="modal" data-bs-target="#itemModal<?=$row1['product_id']?>">
-                    <div class="col h-100">
-                        <div class="card">
+                    <div class="col">
+                        <div class="card" style="height: 6em;">
                             <div class="card-body">
-                                <div class="col-md-12">
+                                <div class="col-12">
                                     <div class="row">
-                                        <div class="col-md-7">
-                                            <img  style="width: 100%; height: 8em; max-width: 200px;" src="./images/<?= $row1['product_img'] ?>">
+                                        <div class="col-4">
+                                            <img  style="width: 100%; height: 4em; max-width: 4em;" src="./images/<?= $row1['product_img'] ?>">
                                         </div>
-                                        <div class="col-md-5">
-                                            <h5 class="card-title"><?= $row1['product_name']; ?></h5>
+                                        <div class="col-8 text-start" style="font-size: 12x;">
+                                            <h6 class="card-title"><?= $row1['product_name']; ?></h6>
                                             Price: <?= CURRENCY .  number_format($row1['product_price'],2) ?> per kg<br>
                                         </div>
                                     </div>
@@ -177,6 +181,15 @@
                                             <b> Stock:</b> <?= $row1['product_stock'] ?>kg<br>
                                             <b>Minimum Order :</b>  <?= $row1['min_order'] ?> kg<br>
                                             <b>Product Details:<br></b>  <?= $row1['product_details'] ?><br>
+                                            <?php
+                                                $seller = $row['seller_id'];
+                                                $sellerDev = "SELECT * FROM users WHERE user_id = '$seller'";
+                                                $sellerres = mysqli_query($conn, $sellerDev);
+                                                $sellerRow = mysqli_fetch_assoc($sellerres);
+                                            ?>
+                                            <b>Seller: </b><?= $sellerRow['fullname'] ?><br>
+                                            <b>Delivery Location: </b> <?= $sellerRow['delivery_area'] ?><br>
+                                            <b>Pick Up Address: </b><?= $sellerRow['pickup_address'] ?>
                                             <div class="form-group mb-3 mt-3">
                                             <form action="./extension/add_cart.php" method="POST">
                                                 <label for="qty" class="mb-3"><b>Quantity</b></label>
@@ -200,14 +213,87 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <script>
-                        function openLoginModal(product_id1) {
-                            $('#itemModal' + product_id1).modal('hide');
-                            $('#loginModal').modal('show'); 
-                        }
-                    </script>
+                    </div>    
                 <?php } } ?>
+                <h4 class="text-center bg-white text-success mt-2">RECENT PRODUCTS</h4>
+                <?php 
+                    $recent = "SELECT * FROM products
+                            WHERE product_status = 'On Sale' AND product_stock > min_order
+                            ORDER BY date_added DESC
+                            LIMIT 5";
+
+                    $recentResult = mysqli_query($conn, $recent);
+
+                    while ($row1 = mysqli_fetch_assoc($recentResult)) {
+                ?>
+                    <button class="btn" type="button" data-bs-toggle="modal" data-bs-target="#itemModal<?=$row1['product_id']?>">
+                        <div class="col">
+                            <div class="card" style="height: 6em;">
+                                <div class="card-body">
+                                    <div class="col-12">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <img  style="width: 100%; height: 4em; max-width: 4em;" src="./images/<?= $row1['product_img'] ?>">
+                                            </div>
+                                            <div class="col-8 text-start" style="font-size: 12x;">
+                                                <h6 class="card-title"><?= $row1['product_name']; ?></h6>
+                                                Price: <?= CURRENCY .  number_format($row1['product_price'],2) ?> per kg<br>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </button>
+                    <div class="modal fade" id="itemModal<?=$row1['product_id']?>" tabindex="-1" role="dialog" aria-labelledby="itemModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-md-7">
+                                            <img style="height: auto; width: 100%;" src="./images/<?= $row1['product_img'] ?>">
+                                        </div>
+                                        <div class="col-md-5">
+                                            <b>Name:</b> <?= $row1['product_name'] ?><br>
+                                            <b>Product Price:</b><br> <?= CURRENCY .  number_format($row1['product_price'],2) ?> per kg<br>
+                                            <b> Stock:</b> <?= $row1['product_stock'] ?>kg<br>
+                                            <b>Minimum Order :</b>  <?= $row1['min_order'] ?> kg<br>
+                                            <b>Product Details:<br></b>  <?= $row1['product_details'] ?><br>
+                                            <?php
+                                                $seller = $row['seller_id'];
+                                                $sellerDev = "SELECT * FROM users WHERE user_id = '$seller'";
+                                                $sellerres = mysqli_query($conn, $sellerDev);
+                                                $sellerRow = mysqli_fetch_assoc($sellerres);
+                                            ?>
+                                            <b>Seller: </b><?= $sellerRow['fullname'] ?><br>
+                                            <b>Delivery Location: </b> <?= $sellerRow['delivery_area'] ?><br>
+                                            <b>Pick Up Address: </b><?= $sellerRow['pickup_address'] ?>
+                                            <div class="form-group mb-3 mt-3">
+                                                <form action="./extension/add_cart.php" method="POST">
+                                                    <label for="qty" class="mb-3"><b>Quantity</b></label>
+                                                    <input type="number" name="qty" class="form-control" value="<?php echo $row1['min_order'] ?>" min="<?php echo $row['min_order'] ?>" max="<?php echo $row['product_stock'] ?>">
+                                            </div>
+                                            <div class="float-end d-flex">
+                                                <input type="hidden" name="user_id" value="<?php echo $user_id; ?>">
+                                                <input type="hidden" name="product_id" value="<?= $row1['product_id']; ?>">
+                                                <button type="button" class="btn" data-bs-dismiss="modal">Cancel</button>
+                                                <?php if ($user_id != 0) { ?>
+                                                    <button type="submit" class="btn btn-outline-success" name="addcart">Add to Cart</button>
+                                                <?php } else { ?>
+                                                    <button type="button" class="btn btn-outline-success" onclick="openLoginModal(<?=$row1['product_id']?>)">
+                                                        Add to Cart
+                                                    </button>
+                                                <?php  } ?>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>    
+                <?php } ?>
+                </div>
             </div>
         </div>
     </div>
@@ -218,4 +304,10 @@
     <script src="./js/chat_canvas.js"></script>
     <script src="./js/chat_icon.js"></script>
 </body>
+<script>
+    function openLoginModal(product_id1) {
+        $('#itemModal' + product_id1).modal('hide');
+        $('#loginModal').modal('show'); 
+    }
+</script>
 </html>

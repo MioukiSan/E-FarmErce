@@ -67,7 +67,7 @@ if (isset($_POST['change_status'])) {
                 $parameters = array(
                     'apikey' => 'a98eb9abe2636f1d3c09370d98663a40',
                     'number' => $number,
-                    'message' => $messdate,
+                    'message' => $mess,
                     'sendername' => ''
                 );
 
@@ -86,11 +86,11 @@ if (isset($_POST['change_status'])) {
                     $stmt->bind_param("ss", $status, $ref);
 
                     if ($stmt->execute()) {
-                        echo "<script>alert('Changed SUCCESSFULLY!'); window.location.href = document.referrer;</script>";
+                        echo "<script>alert('Changed SUCCESSFULLY'); window.location.href = document.referrer;</script>";
                     } else {
                         echo "Error updating order: " . mysqli_error($conn);
                     }
-                }
+                }                    
 
                 curl_close($ch);
             } else {
@@ -156,7 +156,7 @@ if (isset($_POST['change_status'])) {
                 $parameters = array(
                     'apikey' => 'a98eb9abe2636f1d3c09370d98663a40',
                     'number' => $number,
-                    'message' => $messdate,
+                    'message' => $mess,
                     'sendername' => ''
                 );
 

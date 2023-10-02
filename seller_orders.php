@@ -14,7 +14,15 @@
     <div class="container">
         <?php require_once './includes/sidenav.php';?>
         <div class="row">
-            <h1 style="padding-top: 10px;">ORDERS LIST</h1>
+            <div class="col-10">
+                <h1 style="padding-top: 10px;">ORDER LIST</h1>
+            </div>
+            <div class="col-2 d-flex float-end">
+                <button type="button"style=" color: green;" class="btn position-relative m-2" data-bs-toggle="offcanvas" data-bs-target="#chat" aria-controls="offcanvasRight">
+                <ion-icon size="large" name="chatbubbles-outline"></ion-icon></button>
+                <?php require_once './extension/notif_seller.php';?>
+            </div>
+        </div>
             <div class="col">
                 <form method="POST" action="">
                 <button type="submit" name="confirmed" class="float-end" style="background-color: transparent; border: 2px solid green; color: green; margin-left: 5px;">CONFIRMED</button>
@@ -36,27 +44,30 @@
                     </thead>
                     <tbody class="text-center">
                         <?php
-
-                            if(isset($_POST['delivered'])){
-                                $query = "SELECT DISTINCT order_reference, order_status, date_place, transact_mode, order_rating, order_comm FROM orders WHERE seller_id = '$user_idS' AND order_status = 'Delivered'";
+                            if(isset($_GET['delivered'])){
+                                $query = "SELECT DISTINCT order_reference, order_status, date_place, transact_mode, order_rating, order_comm FROM orders WHERE seller_id = '$user_id' AND order_status = 'Delivered' ORDER BY date_place DESC";
+                                $result = mysqli_query($conn, $query);
+                            }elseif (isset($_GET['trancode'])) {
+                                $code = $_GET['trancode'];
+                                $query = "SELECT DISTINCT order_reference, order_status, date_place, transact_mode, order_rating, order_comm FROM orders WHERE seller_id = '$user_idS' AND order_reference = '$code'";
                                 $result = mysqli_query($conn, $query);
                             }elseif(isset($_POST['confirmed'])){
-                                $query = "SELECT DISTINCT order_reference, order_status, date_place, transact_mode, order_rating, order_comm FROM orders WHERE seller_id = '$user_idS' AND order_status = 'Confirmed'";
+                                $query = "SELECT DISTINCT order_reference, order_status, date_place, transact_mode, order_rating, order_comm FROM orders WHERE seller_id = '$user_id' AND order_status = 'Confirmed' ORDER BY date_place DESC";
                                 $result = mysqli_query($conn, $query);
                             }elseif(isset($_POST['cancel'])){
-                                $query = "SELECT DISTINCT order_reference, order_status, date_place, transact_mode, order_rating, order_comm FROM orders WHERE seller_id = '$user_idS' AND order_status = 'Cancelled'";
+                                $query = "SELECT DISTINCT order_reference, order_status, date_place, transact_mode, order_rating, order_comm FROM orders WHERE seller_id = '$user_id' AND order_status = 'Cancelled' ORDER BY date_place DESC";
                                 $result = mysqli_query($conn, $query);
                             }elseif(isset($_POST['pick'])){
-                                $query = "SELECT DISTINCT order_reference, order_status, date_place, transact_mode, order_rating, order_comm FROM orders WHERE seller_id = '$user_idS' AND order_status = 'Picked Up'";
+                                $query = "SELECT DISTINCT order_reference, order_status, date_place, transact_mode, order_rating, order_comm FROM orders WHERE seller_id = '$user_id' AND order_status = 'Picked Up' ORDER BY date_place DESC";
                                 $result = mysqli_query($conn, $query);
                             }elseif(isset($_POST['pending'])){
-                                $query = "SELECT DISTINCT order_reference, order_status, date_place, transact_mode, order_rating, order_comm FROM orders WHERE seller_id = '$user_idS'AND order_status = 'Pending'";
+                                $query = "SELECT DISTINCT order_reference, order_status, date_place, transact_mode, order_rating, order_comm FROM orders WHERE seller_id = '$user_id'AND order_status = 'Pending' ORDER BY date_place DESC";
                                 $result = mysqli_query($conn, $query);
                             }elseif(isset($_POST['all'])){
-                                $query = "SELECT DISTINCT order_reference, order_status, date_place, transact_mode, order_rating, order_comm FROM orders WHERE seller_id = '$user_idS'";
+                                $query = "SELECT DISTINCT order_reference, order_status, date_place, transact_mode, order_rating, order_comm FROM orders WHERE seller_id = '$user_id' ORDER BY date_place DESC";
                                 $result = mysqli_query($conn, $query);
                             }else{
-                            $query = "SELECT DISTINCT order_reference, order_status, date_place, transact_mode, order_rating, order_comm FROM orders WHERE seller_id = '$user_idS' AND order_status != 'Cancelled'";
+                            $query = "SELECT DISTINCT order_reference, order_status, date_place, transact_mode, order_rating, order_comm FROM orders WHERE seller_id = '$user_id' AND order_status != 'Cancelled' ORDER BY date_place DESC";
                             $result = mysqli_query($conn, $query);
                             }
                             foreach($result as $row){
@@ -105,10 +116,10 @@
 
                                     if ($orderInfoRow = mysqli_fetch_assoc($orderInfoResult)) {
                                         $transact_mode = $orderInfoRow['transact_mode'];
-                                        $user_id = $orderInfoRow['user_id'];
+                                        $user_id1 = $orderInfoRow['user_id'];
 
                                         // Retrieve user information from the users table
-                                        $queryUserInfo = "SELECT * FROM users WHERE user_id = '$user_id'";
+                                        $queryUserInfo = "SELECT * FROM users WHERE user_id = '$user_id1'";
                                         $userInfoResult = mysqli_query($conn, $queryUserInfo);
 
                                         if ($userInfoRow = mysqli_fetch_assoc($userInfoResult)) {
@@ -134,7 +145,7 @@
                                                 <div class="col-6">
                                                 <?php 
                                                     if($transact_mode == 'Pick Up'){
-                                                        $userpicup = "SELECT pickup_address FROM users WHERE user_id = '$user_idS'";
+                                                        $userpicup = "SELECT pickup_address FROM users WHERE user_id = '$user_id'";
                                                         $res = mysqli_query($conn, $userpicup);
                                                         while($r = mysqli_fetch_assoc($res)){
                                                             $pick_up = $r['pickup_address'];
@@ -168,8 +179,8 @@
                                         <form action="./extension/notif_sms_updateOrder.php" method="POST">
                                             <input type="hidden" name="transact" value="<?php echo $row['transact_mode'] ?>">
                                             <input type="hidden" name="def_stat" value="<?php echo $row['order_status'] ?>">
-                                            <input type="hidden" name="seller_id" value="<?php echo $user_idS ?>">
-                                            <input type="hidden" name="buyer_id" value="<?php echo $user_id ?>">
+                                            <input type="hidden" name="seller_id" value="<?php echo $user_id ?>">
+                                            <input type="hidden" name="buyer_id" value="<?php echo $user_id1 ?>">
                                             <input type="hidden" name="number" value="<?php echo $userInfoRow['number'] ?>">
                                             <input type="hidden" name="status" value="Approved">
                                             <input type="hidden" name="order_ref" value="<?php echo $order_ref; ?>">
@@ -241,7 +252,7 @@
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                                         <form action="./extension/cancel_order.php" method="POST">
                                                             <input type="hidden" name="transact" value="<?php echo $order_ref ?>">
-                                                            <input type="hidden" name="seller" value="<?php echo $user_idS ?>">
+                                                            <input type="hidden" name="seller" value="<?php echo $user_id ?>">
                                                             <button type="submit" class="btn btn-danger" name="cancel">Cancel Order</button>
                                                         </form>
                                                     </div>
@@ -252,8 +263,8 @@
                                         <form action="./extension/notif_sms_updateOrder.php" method="POST">
                                         <input type="hidden" name="def_stat" value="<?php echo $row['order_status'] ?>">
                                             <input type="hidden" name="transact" value="<?php echo $row['transact_mode'] ?>">
-                                            <input type="hidden" name="seller_id" value="<?php echo $user_idS ?>">
-                                            <input type="hidden" name="buyer_id" value="<?php echo $user_id ?>">
+                                            <input type="hidden" name="seller_id" value="<?php echo $user_id ?>">
+                                            <input type="hidden" name="buyer_id" value="<?php echo $user_id1 ?>">
                                             <input type="hidden" name="number" value="<?php echo $userInfoRow['number'] ?>">
                                             <input type="hidden" name="status" value="On the way to pick up location">
                                             <input type="hidden" name="order_ref" value="<?php echo $order_ref; ?>">
@@ -264,8 +275,8 @@
                                         <form action="./extension/notif_sms_updateOrder.php" method="POST">
                                         <input type="hidden" name="def_stat" value="<?php echo $row['order_status'] ?>">
                                             <input type="hidden" name="transact" value="<?php echo $row['transact_mode'] ?>">
-                                            <input type="hidden" name="seller_id" value="<?php echo $user_idS ?>">
-                                            <input type="hidden" name="buyer_id" value="<?php echo $user_id ?>">
+                                            <input type="hidden" name="seller_id" value="<?php echo $user_id ?>">
+                                            <input type="hidden" name="buyer_id" value="<?php echo $user_id1 ?>">
                                             <input type="hidden" name="number" value="<?php echo $userInfoRow['number'] ?>">
                                             <input type="hidden" name="status" value="Ready to pick up">
                                             <input type="hidden" name="order_ref" value="<?php echo $order_ref; ?>">
@@ -276,8 +287,8 @@
                                         <form action="./extension/notif_sms_updateOrder.php" method="POST">
                                         <input type="hidden" name="def_stat" value="<?php echo $row['order_status'] ?>">
                                             <input type="hidden" name="transact" value="<?php echo $row['transact_mode'] ?>">
-                                            <input type="hidden" name="seller_id" value="<?php echo $user_idS ?>">
-                                            <input type="hidden" name="buyer_id" value="<?php echo $user_id ?>">
+                                            <input type="hidden" name="seller_id" value="<?php echo $user_id ?>">
+                                            <input type="hidden" name="buyer_id" value="<?php echo $user_id1 ?>">
                                             <input type="hidden" name="number" value="<?php echo $userInfoRow['number'] ?>">
                                             <input type="hidden" name="status" value="Picked up">
                                             <input type="hidden" name="order_ref" value="<?php echo $order_ref; ?>">
@@ -302,8 +313,8 @@
                                         <form action="./extension/notif_sms_updateOrder.php" method="POST">
                                             <input type="text" name="def_stat" value="<?php echo $row['order_status'] ?>">
                                             <input type="hidden" name="transact" value="<?php echo $row['transact_mode'] ?>">
-                                            <input type="hidden" name="seller_id" value="<?php echo $user_idS ?>">
-                                            <input type="hidden" name="buyer_id" value="<?php echo $user_id ?>">
+                                            <input type="hidden" name="seller_id" value="<?php echo $user_id ?>">
+                                            <input type="hidden" name="buyer_id" value="<?php echo $user_id1 ?>">
                                             <input type="hidden" name="number" value="<?php echo $userInfoRow['number'] ?>">
                                             <input type="hidden" name="status" value="Approved">
                                             <input type="hidden" name="order_ref" value="<?php echo $order_ref; ?>">
@@ -319,8 +330,8 @@
                                         <form action="./extension/notif_sms_updateOrder.php" method="POST">
                                         <input type="hidden" name="def_stat" value="<?php echo $row['order_status'] ?>">
                                             <input type="hidden" name="transact" value="<?php echo $row['transact_mode'] ?>">
-                                            <input type="hidden" name="seller_id" value="<?php echo $user_idS ?>">
-                                            <input type="hidden" name="buyer_id" value="<?php echo $user_id ?>">
+                                            <input type="hidden" name="seller_id" value="<?php echo $user_id ?>">
+                                            <input type="hidden" name="buyer_id" value="<?php echo $user_id1 ?>">
                                             <input type="hidden" name="number" value="<?php echo $userInfoRow['number'] ?>">
                                             <input type="hidden" name="status" value="Out for delivery">
                                             <input type="hidden" name="order_ref" value="<?php echo $order_ref; ?>">
@@ -331,8 +342,8 @@
                                         <form action="./extension/notif_sms_updateOrder.php" method="POST">
                                         <input type="hidden" name="def_stat" value="<?php echo $row['order_status'] ?>">
                                             <input type="hidden" name="transact" value="<?php echo $row['transact_mode'] ?>">
-                                            <input type="hidden" name="seller_id" value="<?php echo $user_idS ?>">
-                                            <input type="hidden" name="buyer_id" value="<?php echo $user_id ?>">
+                                            <input type="hidden" name="seller_id" value="<?php echo $user_id ?>">
+                                            <input type="hidden" name="buyer_id" value="<?php echo $user_id1 ?>">
                                             <input type="hidden" name="number" value="<?php echo $userInfoRow['number'] ?>">
                                             <input type="hidden" name="status" value="Delivered">
                                             <input type="hidden" name="order_ref" value="<?php echo $order_ref; ?>">

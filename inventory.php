@@ -61,7 +61,16 @@
     <div class="container">
         <?php require_once './includes/sidenav.php';?>
         <div class="row">
-            <h1 style="padding-top: 10px;">INVENTORY</h1>
+            <div class="col-10">
+                <h1 style="padding-top: 10px;">ORDER LIST</h1>
+            </div>
+            <div class="col-2 d-flex float-end">
+                <button type="button"style=" color: green;" class="btn position-relative m-2" data-bs-toggle="offcanvas" data-bs-target="#chat" aria-controls="offcanvasRight">
+                <ion-icon size="large" name="chatbubbles-outline"></ion-icon></button>
+                <?php require_once './extension/notif_seller.php';?>
+            </div>
+        </div>
+        <div class="row">
             <div class="col-md-12 d-flex">
                 <div class="col-md-11">
                     <form class="d-flex mt-3" action="?query"  method="GET" role="search">

@@ -24,14 +24,9 @@
 <body>
 <?php require_once './includes/navbar.php';?>
     <div class="container">
-        <div class="toast-container top-0 start-50 translate-middle-x mt-5 bg-success">
+        <div class="toast-container top-0 start-50 translate-middle-x mt-5">
             <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-                <div class="toast-header">
-                <img src="" class="rounded me-2">
-                <strong class="me-auto">E-FarmErce</strong>
-                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                </div>
-                <div class="toast-body">
+                <div class="toast-body bg-white text-success text-bold" style="height: 6em;">
                 </div>
             </div>
         </div>
@@ -64,6 +59,7 @@
                 </div>
             </div>
             <div class="col-md-3 col-sm-3 shadow mt-5 dash-scroll justify-content-center" style="height: 35.5em; display:block; overflow-y:scroll;">
+                <div class="row">
                 <?php
                     if (isset($_GET['navsearch'])) {
                         $searchkey = $_GET['navsearch'];
@@ -147,6 +143,7 @@
                     }
                 ?>
             </div>
+            </div>
         </div>
     </div>
     <!-- <?php require_once 'products.php'; ?> -->
@@ -209,13 +206,13 @@
         <?php
         if (isset($_SESSION['login_status'])) {
             if ($_SESSION['login_status'] === 'success') {
-                // Show a success toast
-                echo '$(".toast-body").text("Login successful!");';
+                // Show a success toast with "Hello [fullname]" on a new line
+                echo '$(".toast-body").html("Login successful!  " + "<br>" + "' . 'Hello ' . $_SESSION['fullname'] . ', Welcome back!!!");';
             } elseif ($_SESSION['login_status'] === 'error') {
                 // Show an error toast
                 echo '$(".toast-body").text("Login failed. Incorrect password or email.");';
             }
-            // Clear the login status session variable
+            unset($_SESSION['fullname']);
             unset($_SESSION['login_status']);
             echo 'var liveToast = new bootstrap.Toast(document.getElementById("liveToast"));';
             echo 'liveToast.show();';
@@ -223,4 +220,5 @@
         ?>
     });
 </script>
+
 </html>
