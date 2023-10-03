@@ -10,9 +10,9 @@
     }else{
         $user_id = 0;
     }
-    if(isset($_POST['cart_delete'])) {
-      $user_id = $_POST['user_id'];
-      $cartId = $_POST['cart_id'];
+    if(isset($_GET['cart_delete'])) {
+      $user_id = $_GET['user_id'];
+      $cartId = $_GET['cart_id'];
   ?>
       <script>
           var confirmed = confirm("Are you sure you want to delete this item from your cart?");
@@ -502,7 +502,7 @@ document.addEventListener("DOMContentLoaded", function() {
               WHERE c.user_id = '{$_SESSION['user_id']}'";
               $cartresult = mysqli_query($conn, $cart);
               $ovtotal = 0;
-              foreach ($cartresult as $carts) {
+              foreach ($cartresult as $carts) :
                 $productId = $carts['product_id'];
                 $productName = $carts['product_name'];
                 $productPrice = $carts['product_price'];
@@ -516,13 +516,12 @@ document.addEventListener("DOMContentLoaded", function() {
             <tbody class="text-center">
             <tr>
                   <td>
-                  <!-- <form method="POST">
+                  <form method="GET">
                         <input type="hidden" name="cart_id" value="<?= $cartId ?>">
                         <input type="hidden" name="user_id" value="<?php echo $user_id;?>">
                         <button type="submit" name="cart_delete" class="btn btn-light"><ion-icon name="trash-outline"></ion-icon></button>
-                  </form> -->
+                  </form>
                   <label>
-                  <form method="POST" action="./checkout.php">
                       <input type="checkbox" class="btn" name="selected_products[]" value="<?= $cartId ?>" <?php if ($productStock < $carts['min_order'] || $carts['product_status'] == 'Deleted') {echo 'disabled';} else {echo 'checked';} ?>>
                       <?php if ($productStock < $carts['min_order']) {echo 'Stock not enough';}elseif($carts['product_status'] == 'Deleted'){echo 'Unavailable';} ?>
                   </label>
@@ -533,7 +532,7 @@ document.addEventListener("DOMContentLoaded", function() {
                   </td>
                   <td><?php echo CURRENCY . number_format($total, 2);?></td>
               </tr>
-            <?php } ?>
+            <?php endforeach; ?>
             <tr style="background-color: green;">
                 <td>TOTAL</td>
                 <td></td>
@@ -542,11 +541,36 @@ document.addEventListener("DOMContentLoaded", function() {
               </tr>
             </tbody>
         </table>
-        <button type="submit" class="btn btn-outline-success text-end" name="checkout">Checkout</button>
-    </form>
+        <form method="POST" action="./checkout.php" id="checkoutForm">
+          <button type="submit" class="btn btn-outline-success text-end" name="checkout">Checkout</button>
+        </form>
+    </div>
   </div>
 </div>
-</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const checkoutForm = document.querySelector('#checkoutForm');
+        const checkboxes = document.querySelectorAll('[name^="selected_products"]');
+
+        checkoutForm.addEventListener('submit', function (event) {
+            const selectedCheckboxes = [...checkboxes].filter(checkbox => checkbox.checked);
+
+            if (selectedCheckboxes.length === 0) {
+                event.preventDefault(); // Prevent form submission if no checkboxes are selected
+                alert('Please select items to checkout.');
+            } else {
+                // Add selected checkbox values to the checkout form as hidden inputs
+                selectedCheckboxes.forEach(checkbox => {
+                    const hiddenInput = document.createElement('input');
+                    hiddenInput.type = 'hidden';
+                    hiddenInput.name = 'selected_products[]';
+                    hiddenInput.value = checkbox.value;
+                    checkoutForm.appendChild(hiddenInput);
+                });
+            }
+        });
+    });
+</script>
 <div class="modal fade" id="logout" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
