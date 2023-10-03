@@ -32,11 +32,17 @@
             </a>
           </li>
           <li>
-            <a href="acc_management.php" class="nav-item1">
+            <a href="account_management.php" class="nav-item1">
             <i><ion-icon name="people-circle-outline"></ion-icon></i>
               <span class="nav-item">Accounts</span>
             </a>
           </li>
+          <li>
+          <a href="logout.php" class="nav-item1">
+           <i><ion-icon name="log-out-outline"></ion-icon></i>
+            <span class="nav-item">Logout</span>
+          </a>
+        </li>
           <li>
             <a href="./index.php" class="nav-item1 my-5" data-bs-toggle="tooltip" data-bs-title="BACK HOME">
               <i><ion-icon name="swap-horizontal-outline"></ion-icon></i>
@@ -60,6 +66,12 @@
           <a href="seller_orders.php" class="nav-item1">
            <i><ion-icon name="bag-check-outline"></ion-icon></i>
             <span class="nav-item">OrderList</span>
+          </a>
+        </li>
+        <li>
+          <a href="logout.php" class="nav-item1">
+           <i><ion-icon name="log-out-outline"></ion-icon></i>
+            <span class="nav-item">Logout</span>
           </a>
         </li>
         <li>

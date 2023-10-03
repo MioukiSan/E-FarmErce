@@ -154,24 +154,26 @@
             <div class="row">
                 <div class="col-md-9">
                     <div class="table shadow-sm">
-                        <table class="table table-info table-responsive table-sm">
+                    <table class="table table-info table-responsive table-sm">
                             <thead class="text-center">
                                 <tr>
-                                    <td colspan="3">RECENT ORDERS</td>
+                                    <th colspan="4">RECENT ORDERS</th>
                                 </tr>
                             </thead>
                                 <thead class="table-light text-center">
                                 <tr>
-                                    <td>BUYER</td>
-                                    <td>ORDER QTY</td>
-                                    <td>TOTAL AMT</td>
+                                    <th>BUYER</th>
+                                    <th>PRODUCT</th>
+                                    <th>ORDER QTY</th>
+                                    <th>TOTAL AMT</th>
                                 </tr>
                             </thead>
                             <tbody class="text-center">
                             <?php
-                                $sql = "SELECT o.*, u.fullname 
+                                $sql = "SELECT o.*, u.fullname, p.product_name
                                         FROM orders o
                                         INNER JOIN users u ON o.user_id = u.user_id
+                                        INNER JOIN products p ON p.product_id = o.product_id
                                         ORDER BY o.date_place DESC 
                                         LIMIT 8";
 
@@ -181,6 +183,7 @@
                             ?>
                                 <tr>
                                     <td><?php echo $row['fullname'] ?></td>
+                                    <td><?php echo $row['product_name'] ?></td>
                                     <td><?php echo $row['order_qty'] ?></td>
                                     <td><?php echo $row['order_total'] ?></td>
                                 </tr>

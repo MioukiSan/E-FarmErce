@@ -25,6 +25,10 @@ if (isset($_POST['login'])) {
                 $_SESSION['fullname'] = $row['fullname'];
                 $_SESSION['user_type'] = $user_type;
 
+                $user_id = $row['user_id'];
+                $update_last_login_sql = "UPDATE users SET last_login = NOW() WHERE user_id = '$user_id'";
+                $conn->query($update_last_login_sql);
+                
                 $_SESSION['login_status'] = 'success';
                 if ($user_type === 'Admin') {
                     header("location: ../dashboard_admin.php");
