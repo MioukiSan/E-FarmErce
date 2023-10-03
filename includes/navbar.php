@@ -73,7 +73,7 @@
         <?php else: ?>
           <ul class="nav-item pt-4 d-flex">
             <?php if($info['user_type'] == 'Seller') { ?>
-            <a class="btn position-relative" data-bs-toggle="tooltip" data-bs-title="SWITCH TO SELLER MODE" style=" color: green;" href="./seller.php"><ion-icon size="large" name="swap-horizontal-outline"></ion-icon></a>
+            <a class="btn position-relative" data-bs-toggle="tooltip" data-bs-title="SWITCH TO SELLER UI" style=" color: green;" href="./seller.php"><ion-icon size="large" name="swap-horizontal-outline"></ion-icon></a>
             <?php } elseif( $info['user_type'] == 'Admin'){ ?>
               <a class="btn position-relative" data-bs-toggle="tooltip" data-bs-title="BACK TO ADMIN PAGE" style=" color: green;" href="./dashboard_admin.php"><ion-icon size="large" name="swap-horizontal-outline"></ion-icon></a>
             <?php } ?>

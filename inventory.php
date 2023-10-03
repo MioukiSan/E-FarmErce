@@ -61,12 +61,10 @@
     <div class="container">
         <?php require_once './includes/sidenav.php';?>
         <div class="row">
-            <div class="col-10">
+            <div class="col-11">
                 <h1 style="padding-top: 10px;">ORDER LIST</h1>
             </div>
-            <div class="col-2 d-flex float-end">
-                <button type="button"style=" color: green;" class="btn position-relative m-2" data-bs-toggle="offcanvas" data-bs-target="#chat" aria-controls="offcanvasRight">
-                <ion-icon size="large" name="chatbubbles-outline"></ion-icon></button>
+            <div class="col-1 d-flex float-end">
                 <?php require_once './extension/notif_seller.php';?>
             </div>
         </div>
@@ -182,7 +180,7 @@
                                     <?= $row['product_details'] ?><br>
                                     Min Order: <?= $row['min_order'] ?><br>
                                 </td>
-                                <td class="text-center" style="color: <?php if($row['product_status'] == 'On Sale'){echo 'green';}else{ echo 'blue';}?>">
+                                <td class="text-center" style="color: <?php if($row['product_status'] == 'On Sale'){echo 'green';}elseif($row['product_status'] == 'restricted'){ echo 'red';} else {echo 'blue';}?>">
                                     <?php echo $row['product_status'];?>
                                 </td>
                                 <td class="text-center">
@@ -220,9 +218,14 @@
                                                                 <textarea class="form-control" name="productDetails" rows="3"><?php echo $row['product_details']; ?></textarea>
                                                             </div>
                                                         </div>
+                                                        <?php if ($row['product_status'] == 'restricted') { ?>
+                                                            <div class="alert alert-danger" role="alert">
+                                                                Product violated the policy.
+                                                            </div>
+                                                        <?php } ?>
                                                         <div class="input-group mb-3">
                                                             <span class="input-group-text">Product Status</span>
-                                                            <select class="form-select" name="status">
+                                                            <select class="form-select" name="status" <?php echo ($row['product_status'] == 'restricted') ? 'disabled' : ''; ?>>
                                                                 <option value="<?php echo $row['product_status'] ?>"><?php echo $row['product_status'] ?></option>
                                                                 <option value="On Sale">On Sale</option>
                                                                 <option value="Sold">Sold</option>

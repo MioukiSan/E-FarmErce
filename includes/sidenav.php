@@ -20,7 +20,7 @@
           $w = $r['user_type'];
           if($w == 'Admin'){ ?>
           <li>
-            <a href="admin.php" class="nav-item1">
+            <a href="dashboard_admin.php" class="nav-item1">
               <i><ion-icon name="grid-outline"></ion-icon></i>
               <span class="nav-item">Dashboard</span>
             </a>
