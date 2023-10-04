@@ -61,7 +61,7 @@ if (isset($_POST['login'])) {
                         echo "Email could not be sent. Mailer Error: {$mail->ErrorInfo}";
                         exit();
                     }
-                    
+                    $_SESSION['user_id'] = $user_id;
                     header("location: ../account_confirm.php");
                     exit();
                 }

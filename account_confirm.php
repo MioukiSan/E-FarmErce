@@ -1,5 +1,6 @@
 <?php
 require_once './includes/db.php';
+$user_id = $_SESSION['user_id'];
 
 if (isset($_POST['confirm'])) {
     $user_id = $_POST['user_id'];
@@ -57,16 +58,17 @@ if (isset($_POST['confirm'])) {
                         </div>
                     </div>
                     <div class="col-md-6 my-3 reset_form">
-                        <form method="POST" action="">
-                            <input type="hidden" name="user_id" value="<?php echo $user_id?>">
                             <h5>HI USER!</h5>
                             <p><i>Only a few steps remain to enjoy shopping. :)</i></p>
                             <div class="alert alert-info" role="alert">
                                 We already send a confirmation code on your email.Please check your inbox!!!
                             </div>
                             <label for="confirmcode">ENTER CONFIRMATION CODE</label>
-                            <input type="text" class="form-control mt-2" name="confirmation code">
+                        <form method="POST" action="">
+                            <input type="hidden" name="user_id" value="<?php echo $user_id; ?>">
+                            <input type="text" class="form-control mt-2" name="confirmation_code">
                             <button class="btn btn-success mt-4" type="submit" name="confirm">SUBMIT</button>
+                        </form>
                     </div>
                 </div>  
             </div>

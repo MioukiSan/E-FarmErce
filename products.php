@@ -1,6 +1,33 @@
 <?php
     require_once './includes/db.php';
     
+    $user_id = 0; // Initialize user_id with a default value
+    if (isset($_SESSION['user_id'])) {
+        $user_id = $_SESSION['user_id'];
+    }
+    
+    if ($user_id != 0) {
+        // SQL: Get the 'sts' value from the 'users' table for the logged-in user
+        $sql = "SELECT sts FROM users WHERE user_id = '$user_id'";
+        $result = mysqli_query($conn, $sql);
+    
+        if ($result) {
+            $row = mysqli_fetch_assoc($result);
+            $user_sts = $row['sts'];
+    
+            if ($user_sts === 'Unverified') {
+                // Redirect to the account_confirm page if 'sts' is 'Unverified'
+                header("Location: account_confirm.php");
+                exit();
+            } else {
+
+            }
+        } else {
+            echo "Error: " . mysqli_error($conn);
+        }
+    } else {
+
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
