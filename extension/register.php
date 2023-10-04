@@ -88,7 +88,7 @@ if (isset($_POST['register'])) {
     }
 
     if ($conn->query($sql) === TRUE) {
-        echo "<script>alert('Registered Successfully! LOGIN'); window.location.href = document.referrer;</script>";
+        echo "<script>alert('Registered Successfully! Login to Confirm your account.'); window.location.href = document.referrer;</script>";
         exit; // Terminate the script after redirect
     } else {
         echo "Error: " . $sql . "<br>" . $conn->error;
