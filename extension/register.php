@@ -74,16 +74,17 @@ if (isset($_POST['register'])) {
 
     $pickup_address = '';
     $delivery_location = '';
+    $sts = 'Unverified';
 
     if ($user_type == "Seller") {
         $pickup_address = $_POST['pickup_address'];
         $delivery_location = $_POST['delivery_location'];
-        $sql = "INSERT INTO users (email, password, fullname, number, address, user_type, id_img, selfie_id, pickup_address, delivery_area) 
-        VALUES ('$email', '$password', '$fullname', '$number', '$address', '$user_type', '$valid_id_name', '$selfie_id_name', '$pickup_address', '$delivery_location')";
+        $sql = "INSERT INTO users (email, password, fullname, number, address, user_type, id_img, selfie_id, pickup_address, delivery_area, sts) 
+        VALUES ('$email', '$password', '$fullname', '$number', '$address', '$user_type', '$valid_id_name', '$selfie_id_name', '$pickup_address', '$delivery_location', '$sts')";
     }else{
         $delivery_location = $_POST['deliver_add'];
-        $sql = "INSERT INTO users (email, password, fullname, number, address, municipality, user_type, id_img, selfie_id, delivery_area) 
-        VALUES ('$email', '$password', '$fullname', '$number', '$address', '$municipality', '$user_type', '$valid_id_name', '$selfie_id_name', '$delivery_location')";
+        $sql = "INSERT INTO users (email, password, fullname, number, address, municipality, user_type, id_img, selfie_id, delivery_area, sts) 
+        VALUES ('$email', '$password', '$fullname', '$number', '$address', '$municipality', '$user_type', '$valid_id_name', '$selfie_id_name', '$delivery_location', '$sts')";
     }
 
     if ($conn->query($sql) === TRUE) {
