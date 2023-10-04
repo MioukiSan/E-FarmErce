@@ -226,9 +226,11 @@
                                                         <div class="input-group mb-3">
                                                             <span class="input-group-text">Product Status</span>
                                                             <select class="form-select" name="status" <?php echo ($row['product_status'] == 'restricted') ? 'disabled' : ''; ?>>
-                                                                <option value="<?php echo $row['product_status'] ?>"><?php echo $row['product_status'] ?></option>
-                                                                <option value="On Sale">On Sale</option>
-                                                                <option value="Sold">Sold</option>
+                                                                <?php if ($row['product_status'] == 'On Sale'): ?>
+                                                                    <option value="Sold">Sold</option>
+                                                                <?php elseif ($row['product_status'] == 'Sold'): ?>
+                                                                    <option value="On Sale">On Sale</option>
+                                                                <?php endif; ?>
                                                             </select>
                                                         </div>
                                                         <div class="text-center">
