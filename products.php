@@ -140,9 +140,7 @@
                                                 <?php if ($user_id != 0) { ?>
                                                     <button type="submit" class="btn btn-outline-success" name="addcart">Add to Cart</button>
                                                 <?php } else { ?>
-                                                    <button type="button" class="btn btn-outline-success" onclick="openLoginModal(<?=$row['product_id']?>)">
-                                                        Add to Cart
-                                                    </button>
+                                                    <button type="submit" class="btn btn-outline-success" name="addcart">Buy Now</button>
                                                 <?php  } ?>
                                                 </form>
                                             </div>
@@ -229,9 +227,7 @@
                                                 <?php if ($user_id != 0) { ?>
                                                     <button type="submit" class="btn btn-outline-success" name="addcart">Add to Cart</button>
                                                 <?php } else { ?>
-                                                    <button type="button" class="btn btn-outline-success" onclick="openLoginModal(<?=$row1['product_id']?>)">
-                                                        Add to Cart
-                                                    </button>
+                                                    <button type="submit" class="btn btn-outline-success" name="addcart">Buy Now</button>
                                                 <?php  } ?>
                                                 </form>
                                             </div>
@@ -307,9 +303,7 @@
                                                 <?php if ($user_id != 0) { ?>
                                                     <button type="submit" class="btn btn-outline-success" name="addcart">Add to Cart</button>
                                                 <?php } else { ?>
-                                                    <button type="button" class="btn btn-outline-success" onclick="openLoginModal(<?=$row1['product_id']?>)">
-                                                        Add to Cart
-                                                    </button>
+                                                    <button type="submit" class="btn btn-outline-success" name="addcart">Buy Now</button>
                                                 <?php  } ?>
                                                 </form>
                                             </div>

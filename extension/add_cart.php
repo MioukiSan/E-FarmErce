@@ -2,9 +2,15 @@
 require_once '../includes/db.php';
 
 if (isset($_POST['addcart'])) {
-    $user_id = $_POST['user_id'];
-    $product_id = $_POST['product_id'];
-    $qty = $_POST['qty'];
+    if(!isset($_SESSION['user_id'])){
+        $_SESSION['product_id'] = $_POST['product_id'];
+        $_SESSION['qty'] = $_POST['qty'];
+        header("location: ../checkout_no_acc.php");
+        exit();
+    }else{
+        $user_id = $_SESSION['user_id'];
+        $product_id = $_POST['product_id'];
+        $qty = $_POST['qty'];
 
     // Check if the same combination already exists in the cart
     $check_sql = "SELECT c.cart_id, c.order_qty, p.product_stock, p.seller_id
@@ -83,5 +89,6 @@ if (isset($_POST['addcart'])) {
     } else {
         echo "Error: " . $conn->error;
     }
+}
 }
 ?>

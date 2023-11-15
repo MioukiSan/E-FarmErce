@@ -154,8 +154,8 @@
         <form action="./extension/login.php" method="POST">
           <h3 class="text-center mt-4" style="color: green;"><b>LOGIN<ion-icon name="log-in-outline"></ion-icon></b></h3>
             <div class="input-group mb-3 mt-4">
-              <span class="input-group-text custom-adon" id="email"><ion-icon name="person-outline"></ion-icon></span>
-              <input type="text" name="email" class="form-control custom-form" placeholder="Enter email or contact number" aria-label="email" aria-describedby="email" required>
+              <span class="input-group-text custom-adon" id="username"><ion-icon name="person-outline"></ion-icon></span>
+              <input type="text" name="username" class="form-control custom-form" placeholder="Enter Username" aria-label="username" aria-describedby="username" required>
             </div>
             <div class="input-group mb-3 mt-4">
               <span class="input-group-text custom-adon" id="pass"><ion-icon name="lock-closed-outline"></ion-icon></span>
@@ -237,16 +237,16 @@ document.addEventListener("DOMContentLoaded", function() {
         <button type="button" class="btn-close float-end" data-bs-dismiss="modal" aria-label="Close"></button>
         <h3 class="text-center mt-4" style="color: green;"><b>REGISTER<ion-icon name="person-add-outline"></ion-icon></b></h3>
         <form action="./extension/register.php" method="POST" enctype="multipart/form-data">
-          <div class="mb-3">
-            <label for="new_email" class="form-label">Email address<ion-icon name="mail-outline"></ion-icon></label>
-            <input type="email" class="form-control custom-form form-control-sm" name="email" id="new_email" placeholder="name@example.com" required>
-          </div>
           <div class="row">
-            <div class="col-md-6 col-sm-6">
+            <div class="col-md-4 col-sm-4">
+              <label for="username" class="form-label">Username</label>
+              <input type="text" class="form-control form-control-sm custom-form" name="username" id="username" required>
+            </div>
+            <div class="col-md-4 col-sm-4">
               <label for="first_name" class="form-label">First Name</label>
               <input type="text" class="form-control form-control-sm custom-form" name="first_name" id="first_name" required>
             </div>
-            <div class="col-md-6 col-sm-6">
+            <div class="col-md-4 col-sm-4">
               <label for="last_name" class="form-label">Last Name</label>
               <input type="text" class="form-control custom-form form-control-sm" name="last_name" id="last_name" required>
             </div>
@@ -324,16 +324,6 @@ document.addEventListener("DOMContentLoaded", function() {
                   <input type="password" class="form-control form-control-sm custom-form" id="confirm_pass" name="n_pass">
               </div>
               <span id="passwordMatchMessage"></span>
-          </div>
-          <div class="row">
-            <div class="col-md-6 col-sm-6">
-              <label for="id_image" class="form-label">Valid ID</label>
-              <input type="file" class="form-control form-control-sm custom-form" id="id_image" name="id_image" required>
-            </div>
-            <div class="col-md-6 col-sm-6">
-              <label for="id_image_withuser" class="form-label">Selfie with Valid ID</label>
-              <input type="file" class="form-control form-control-sm custom-form" id="id_image_withuser" name="id_image_withuser" required>
-            </div>
           </div>
           <div class="row">
           <div class="col-md-12 col-sm-12 mb-3">

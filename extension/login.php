@@ -8,15 +8,15 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 if (isset($_POST['login'])) {
-    $email = $_POST['email'];
+    $username = $_POST['username'];
     $password = $_POST['pass'];
 
     // Validate input (you can add more validation as needed)
-    if (empty($email) || empty($password)) {
+    if (empty($username) || empty($password)) {
         echo "Email and password are required.";
     } else {
         // Check if the email exists in the database
-        $sql = "SELECT * FROM users WHERE email = '$email' OR number = '$email'";
+        $sql = "SELECT * FROM users WHERE username = '$username'";
         $result = $conn->query($sql);
 
         if ($result->num_rows === 1) {
@@ -70,7 +70,7 @@ if (isset($_POST['login'])) {
                 $update_last_login_sql = "UPDATE users SET last_login = NOW() WHERE user_id = '$user_id'";
                 $conn->query($update_last_login_sql);
 
-                $_SESSION['email'] = $row['email'];
+                $_SESSION['username'] = $row['username'];
                 $_SESSION['fullname'] = $row['fullname'];
                 $_SESSION['user_type'] = $user_type;
 

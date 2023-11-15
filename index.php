@@ -143,15 +143,12 @@
                                             <input type="number" name="qty" class="form-control" value="<?php echo $row['min_order'] ?>" min="<?php echo $row['min_order'] ?>" max="<?php echo $row['product_stock'] ?>">
                                         </div>
                                         <div class="float-end d-flex">
-                                            <input type="hidden" name="user_id" value="<?php echo $user_id; ?>">
                                             <input type="hidden" name="product_id" value="<?= $row['product_id']; ?>">
                                             <button type="button" class="btn" data-bs-dismiss="modal">Cancel</button>
                                             <?php if ($user_id != 0) { ?>
                                                 <button type="submit" class="btn btn-outline-success" name="addcart">Add to Cart</button>
                                             <?php } else { ?>
-                                                <button type="button" class="btn btn-outline-success" onclick="openLoginModal(<?=$row['product_id']?>)">
-                                                    Add to Cart
-                                                </button>
+                                                <button type="submit" class="btn btn-outline-success" name="addcart">Buy Now</button>
                                             <?php  } ?>
                                             </form>
                                         </div>

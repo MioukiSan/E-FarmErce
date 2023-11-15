@@ -1,13 +1,12 @@
 <?php
 require_once '../includes/db.php';
-
 if (isset($_POST['add_item'])) {
     $product_name = $_POST['product_name'];
     $price = $_POST['price'];
     $stock = $_POST['stock'];
     $min_order = $_POST['min_order'];
     $product_details = $_POST['productDetails'];
-    $user_id = $_POST['user_id'];
+    $user_id = $_SESSION['user_id'];
     $cat = $_POST['category'];
 
     $upload_dir = '../images/'; // Specify the directory where you want to save uploaded images
