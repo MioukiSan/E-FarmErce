@@ -144,9 +144,9 @@
                                 <input type="text" class="form-control form-control-sm" name="contact_number" placeholder="Enter your Contact Number" value="<?php echo $_SESSION['number'] ?? ''; ?>" onchange="this.form.submit()">
                             </div>
                             <select class="form-control form-control-sm" name="transaction_mode" id="" onchange="this.form.submit()">
-                                <option value="" disabled selected>Choose transaction mode</option>
-                                <option value="Pick Up" <?php echo ($_SESSION['transaction_mode'] == 'Pick Up') ? 'selected' : ''; ?>>Pick Up</option>
-                                <option value="Delivery" <?php echo ($_SESSION['transaction_mode'] == 'Delivery') ? 'selected' : ''; ?>>Delivery</option>
+                                <option value="" disabled <?php echo (!isset($_SESSION['transaction_mode'])) ? 'selected' : ''; ?>>Choose transaction mode</option>
+                                <option value="Pick Up" <?php echo (isset($_SESSION['transaction_mode']) && $_SESSION['transaction_mode'] == 'Pick Up') ? 'selected' : ''; ?>>Pick Up</option>
+                                <option value="Delivery" <?php echo (isset($_SESSION['transaction_mode']) && $_SESSION['transaction_mode'] == 'Delivery') ? 'selected' : ''; ?>>Delivery</option>
                             </select>
                         </form>
                     </div>
