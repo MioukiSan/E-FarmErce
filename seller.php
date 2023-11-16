@@ -192,7 +192,44 @@
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="table bg-white shadow-sm" style="height: 36.2em; display:block; overflow-y:scroll;">
+                <div class="card shadow-sm mb-3" style="background-color: #C7DAC7;">
+                    <h3 class="text-center m-2" style="background-color: white;">GENERATE SALES REPORT</h3>
+                    <form action="" method="POST">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Between</span>
+                            <input type="date" name="start_date" class="form-control" required>
+                            <span class="input-group-text"> and </span>
+                            <input type="date" name="end_date" class="form-control" required>
+                            <button type="submit" class="text-center btn btn-secondary" name="generatefi">GENERATE</button>
+                        </div>
+                    </form>
+
+                    <?php
+                    if (isset($_POST['generatefi'])) {
+                        $start_date = $_POST['start_date'];
+                        $end_date = $_POST['end_date'];
+                        $showViewButton1 = true;
+                    } else {
+                        $showViewButton1 = false;
+                    }
+                    ?>
+
+                    <form action="./extension/generate_sales_report.php" method="POST" target="_target">
+                        <?php if ($showViewButton1): ?>
+                            <div class="input-group mb-3 text-center">
+                                <input type="text" name="start_date" class="form-control" value="<?php echo $start_date; ?>" aria-label="Username">
+                                <span class="input-group-text">BETWEEN</span>
+                                <input type="text" name="end_date" class="form-control" value="<?php echo $end_date; ?>" aria-label="Server">
+                            </div>
+                            <div class="text-center mb-3">
+                                <button type="submit" id="generatefi" class="text-center btn btn-secondary" name="confirmed"><i class='bx bxs-printer'></i>Confirmed</button>
+                                <button type="submit" id="generatefi" class="text-center btn btn-secondary" name="pending"><i class='bx bxs-printer'></i>Pending</button>
+                                <button type="submit" id="generatefi" class="text-center btn btn-secondary" name="all"><i class='bx bxs-printer'></i>All</button>
+                            </div>
+                        <?php endif; ?>
+                    </form>
+                </div>
+                <div class="table bg-white shadow-sm" style="height: 25em; display:block; overflow-y:scroll;">
                     <table class="table table-responsive table-danger">
                         <thead class="text-center">
                             <tr>

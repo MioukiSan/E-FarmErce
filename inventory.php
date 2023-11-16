@@ -62,7 +62,7 @@
         <?php require_once './includes/sidenav.php';?>
         <div class="row">
             <div class="col-11">
-                <h1 style="padding-top: 10px;">ORDER LIST</h1>
+                <h1 style="padding-top: 10px;">INVENTORY</h1>
             </div>
             <div class="col-1 d-flex float-end">
                 <?php require_once './extension/notif_seller.php';?>
@@ -162,7 +162,7 @@
                             if ($result1) :
                                 while ($row = mysqli_fetch_assoc($result1)) :
                             ?>
-                            <tr>
+                            <tr <?php if($row['product_status'] === 'Restricted'){ echo 'class = "table-danger"';} else { echo '';}?>>
                                 <td>
                                     <div class="row">
                                         <div class="col-md-6 text-end">
@@ -180,11 +180,11 @@
                                     <?= $row['product_details'] ?><br>
                                     Min Order: <?= $row['min_order'] ?><br>
                                 </td>
-                                <td class="text-center" style="color: <?php if($row['product_status'] == 'On Sale'){echo 'green';}elseif($row['product_status'] == 'restricted'){ echo 'red';} else {echo 'blue';}?>">
+                                <td class="text-center" style="color: <?php if($row['product_status'] == 'On Sale'){echo 'green';}elseif($row['product_status'] == 'Restricted'){ echo 'red';} else {echo 'blue';}?>">
                                     <?php echo $row['product_status'];?>
                                 </td>
                                 <td class="text-center">
-                                    <button type="submit" class="btn" data-bs-toggle="modal" data-bs-target="#edit_item<?php echo $row['product_id']; ?>"><ion-icon name="create-outline"></ion-icon></button>
+                                <button type="submit" class="btn" data-bs-toggle="modal" data-bs-target="#edit_item<?php echo $row['product_id']; ?>"><ion-icon name="create-outline"></ion-icon></button>
                                     <div class="modal fade" id="edit_item<?php echo $row['product_id']; ?>" tabindex="-1" aria-labelledby="additem" aria-hidden="true" data-bs-backdrop="static">
                                         <div class="modal-dialog modal-dialog-centered modal-md">
                                             <div class="modal-content">
@@ -218,7 +218,7 @@
                                                                 <textarea class="form-control" name="productDetails" rows="3"><?php echo $row['product_details']; ?></textarea>
                                                             </div>
                                                         </div>
-                                                        <?php if ($row['product_status'] == 'restricted') { ?>
+                                                        <?php if ($row['product_status'] === 'Restricted') { ?>
                                                             <div class="alert alert-danger" role="alert">
                                                                 Product violated the policy.
                                                             </div>
@@ -227,8 +227,10 @@
                                                             <span class="input-group-text">Product Status</span>
                                                             <select class="form-select" name="status" <?php echo ($row['product_status'] == 'restricted') ? 'disabled' : ''; ?>>
                                                                 <?php if ($row['product_status'] == 'On Sale'): ?>
+                                                                    <option value="On Sale" selected>On Sale</option>
                                                                     <option value="Sold">Sold</option>
                                                                 <?php elseif ($row['product_status'] == 'Sold'): ?>
+                                                                    <option value="Sold" selected>Sold</option>
                                                                     <option value="On Sale">On Sale</option>
                                                                 <?php endif; ?>
                                                             </select>

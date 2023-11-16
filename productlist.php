@@ -1,25 +1,41 @@
 <?php 
     require_once './includes/db.php';
     
-    if(isset($_POST['restrict'])) {
+    if(isset($_POST['restrict_product'])) {
         $productID = $_POST['pID'];
     
         // SQL query to update the product_status
-        $updateSQL = "UPDATE products SET product_status = 'restricted' WHERE product_id = $productID";
+        $updateSQL = "UPDATE products SET product_status = 'Restricted' WHERE product_id = $productID";
     
         if(mysqli_query($conn, $updateSQL)) {
-            echo "Product status updated to 'restricted' successfully.";
+            echo "<script>alert('Product status updated to 'restricted' successfully.');</script>";
         } else {
             echo "Error updating product status: " . mysqli_error($conn);
         }
     }
+    if (isset($_POST['restrict_seller'])) {
+        $sellerID = $_POST['sID'];
+    
+        // Update product status in products table
+        $updateProductSQL = "UPDATE products SET product_status = 'Restricted' WHERE seller_id = $sellerID";
+
+        $updateUserSQL = "UPDATE users u
+                          INNER JOIN products p ON u.user_id = p.seller_id
+                          SET u.sts = 'Restricted'";
+    
+    if(mysqli_query($conn, $updateUserSQL)) {
+        echo "<script>alert('Product status and seller status updated to Restricted successfully.');</script>";
+    } else {
+        echo "Error updating product status: " . mysqli_error($conn);
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>INVETORY</title>
+    <title>Report Management</title>
     <?php require_once './includes/head.php'; ?>
     <style>
         .card-cus {
@@ -32,8 +48,8 @@
     <div class="container">
         <?php require_once './includes/sidenav.php';?>
         <div class="row">
-            <h1 style="padding-top: 10px;">INVENTORY</h1>
-            <div class="col-3 d-inline mt-3">
+            <h1 style="padding-top: 10px;">Report Management</h1>
+            <!-- <div class="col-3 d-inline mt-3">
                 <form action="" method="POST">
                     <button type="submit" name="sort" class="btn btn-light text-success" value="fruit">FRUITS</button>
                     <button type="submit" name="sort" class="btn btn-light text-success" value="vegetable">VEGETABLE</button>
@@ -44,7 +60,7 @@
                     <input class="form-control rounded-start text-success" type="search" name="searchprod" placeholder="Search products" aria-label="Search">
                     <button class="btn btn-light text-success rounded-end" type="submit">Search</button>
                 </form>
-            </div>
+            </div> -->
         </div>
         <div class="row mt-4">
             <div class="col-md-12">
@@ -53,79 +69,62 @@
                         <thead class="text-center table-light">
                             <tr>
                                 <th>PRODUCT NAME</th>
-                                <th>PRICE</th>
-                                <th>STOCK</th>
-                                <th>MINIMUM ORDER</th>
+                                <th>ORDER QTY</th>
+                                <th>ORDER AMOUNT</th>
                                 <th>SELLER</th>
-                                <th>STATUS</th>
+                                <th>BUYER</th>
+                                <th>RATE AND COMMENT</th>
+                                <th>PRODUCT STATUS</th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody>
                         <?php
                             $finalResults = array();
-
-                            if (isset($_POST['sort'])) {
-                                $sortValue = $_POST['sort'];
-                                if ($sortValue === 'fruit') {
-                                    $query = "SELECT p.*, u.fullname AS seller_fullname
-                                            FROM products p
-                                            INNER JOIN users u ON p.seller_id = u.user_id
-                                            WHERE product_cat = 'fruit'
-                                            ORDER BY date_added DESC";
-                                    $results = mysqli_query($conn, $query);
-                                    while ($row = mysqli_fetch_assoc($results)) {
-                                        $finalResults[] = $row;
-                                    }
-                                } elseif ($sortValue === 'vegetable') {
-                                    $query = "SELECT p.*, u.fullname AS seller_fullname
-                                            FROM products p
-                                            INNER JOIN users u ON p.seller_id = u.user_id
-                                            WHERE product_cat = 'vegetable'
-                                            AND product_status = 'On Sale'
-                                            AND product_stock > min_order
-                                            ORDER BY date_added DESC";
-                                    $results = mysqli_query($conn, $query);
-                                    while ($row = mysqli_fetch_assoc($results)) {
-                                        $finalResults[] = $row;
-                                    }
-                                }
-                            }elseif (isset($_GET['searchprod'])) {
-                                $searchkey = $_GET['searchprod'];
-                                $query = "SELECT p.*, u.fullname AS seller_fullname
-                                          FROM products p
-                                          INNER JOIN users u ON p.seller_id = u.user_id
-                                          WHERE (product_name LIKE ? OR product_cat LIKE ? OR u.fullname LIKE ?)
-                                          AND product_status = 'On Sale'
-                                          AND product_stock > min_order
-                                          ORDER BY date_added DESC";
-                                $searchkeyWithWildcards = '%' . $searchkey . '%';
-                                $stmt = mysqli_prepare($conn, $query);
-                                mysqli_stmt_bind_param($stmt, "sss", $searchkeyWithWildcards, $searchkeyWithWildcards, $searchkeyWithWildcards);
-                                mysqli_stmt_execute($stmt);
-                                $results = mysqli_stmt_get_result($stmt);
-                            
-                                while ($row = mysqli_fetch_assoc($results)) {
-                                    $finalResults[] = $row;
-                                }
-                            } else {
-                                $query = "SELECT p.*, u.fullname AS seller_fullname
-                                        FROM products p
-                                        INNER JOIN users u ON p.seller_id = u.user_id";
-                                $result = mysqli_query($conn, $query);
+                            $query = "SELECT o.*, p.* FROM orders o LEFT JOIN products p ON p.product_id = o.product_id WHERE order_rating IN (1, 2, 3)";
+                            $result = mysqli_query($conn, $query);                            
                                 while ($row = mysqli_fetch_assoc($result)) {
                                     $finalResults[] = $row;
                                 }
-                            }
                             foreach ($finalResults as $row) {
                             ?>
                             <tr>
                                 <td class="text-center"><?php echo $row['product_name']; ?></td>
-                                <td class="text-center"><?php echo CURRENCY . number_format($row['product_price'], 2); ?></td>
-                                <td class="text-center"><?php echo $row['product_stock'] . ' kg'; ?></td>
-                                <td class="text-center"><?php echo $row['min_order'] . ' kg'; ?></td>
-                                <td class="text-center"><?php echo $row['seller_fullname']; ?></td>
-                                <td class="text-center" style="color: <?php if($row['product_status'] == 'On Sale'){echo 'green';}elseif($row['product_status'] == 'restricted'){ echo 'red';} else {echo 'blue';}?>"><?php echo $row['product_status']; ?></td>
+                                <td class="text-center"><?php echo $row['order_qty'] . ' kilo'; ?></td>
+                                <td class="text-center"><?php echo CURRENCY . number_format($row['order_qty'], 2); ?></td>
+                                <td class="text-center">
+                                <?php 
+                                    $SellerID = $row['seller_id'];
+                                    $SellerName = "SELECT fullname FROM users WHERE user_id = $SellerID";
+                                    $SellerRes = mysqli_query($conn, $SellerName);
+                                    $rrow = mysqli_fetch_assoc($SellerRes);
+                                    $SellerFullName = $rrow['fullname'];
+
+                                    echo $SellerFullName;
+                                ?>
+                                 </td>
+                                 <td class="text-center">
+                                <?php 
+                                    $BuyerID = $row['user_id'];
+                                    $BuyerName = "SELECT fullname FROM users WHERE user_id = $BuyerID";
+                                    $BuyerRes = mysqli_query($conn, $BuyerName);
+                                    $rrrow = mysqli_fetch_assoc($BuyerRes);
+                                    $BuyerFullName = $rrrow['fullname'];
+
+                                    echo $BuyerFullName;
+                                ?>
+                                 </td>
+                                 <td class="text-center">
+                                    <?php
+                                    echo 'ORDER RATING: ';
+                                    for ($i = 0; $i < $row['order_rating']; $i++) {
+                                        echo '<span class="star">&#9733;</span>';
+                                    }
+                                    echo '</br>';
+                                    echo 'ORDER COMMENT: ' . $row['order_comm'];
+                                    ?>
+                                </td>
+                                <td class="text-center" style="color: <?php if($row['product_status'] == 'On Sale'){echo 'green';}elseif($row['product_status'] == 'Restricted'){ echo 'red';} else {echo 'blue';}?>"><?php echo $row['product_status']; ?></td>
                                 <td>
                                     <button type="button" data-bs-toggle="modal" data-bs-target="#restrictModal<?php echo $row['product_id']; ?>" class="btn btn-sm m-0"><ion-icon name="expand-outline"></ion-icon></button>
                                 </td>
@@ -143,17 +142,19 @@
                                                     <p><b>Product Price:</b> <?php echo CURRENCY . number_format($row['product_price'], 2); ?> per kg</p>
                                                     <p><b>Stock:</b> <?php echo $row['product_stock'] ?> kg</p>
                                                     <p><b>Minimum Order:</b> <?php echo $row['min_order'] ?> kg</p>
-                                                    <p><b>Seller:</b> <?php echo $row['seller_fullname']; ?></p>
+                                                    <p><b>Seller:</b> <?php echo $SellerFullName; ?></p>
                                                     <p><b>Status:</b> <?php echo $row['product_status']; ?></p>
-                                                    <!-- Add more product details here -->
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                         <form action="" method="POST">
                                             <input type="hidden" name="pID" value="<?php echo $row['product_id']; ?>">
-                                            <button type="submit" class="btn btn-danger" name="restrict">Restrict</button>
+                                            <input type="hidden" name="sID" value="<?php echo $SellerID ?>">
+                                            <div class="d-flex-inline">
+                                                <button type="submit" class="btn btn-warning" name="restrict_product">Restrict Product</button>
+                                                <button type="submit" class="btn btn-danger" name="restrict_seller">Restrict Seller</button>
+                                            </div>
                                         </form>
                                         </div>
                                     </div>

@@ -17,6 +17,9 @@
     if(isset($_POST['transaction_mode'])){
         $_SESSION['transaction_mode'] = $_POST['transaction_mode'];
     }
+    if(isset($_POST['municipality'])){
+        $_SESSION['municipality'] = $_POST['municipality'];
+    }
 ?>
 
 <!DOCTYPE html>
@@ -137,8 +140,29 @@
                             <div class="mb-3">
                                 <input type="text" class="form-control form-control-sm" name="name" placeholder="Enter your name" value="<?php echo $_SESSION['name'] ?? ''; ?>" onchange="this.form.submit()">
                             </div>
-                            <div class="mb-3">
-                                <input type="text" class="form-control form-control-sm" name="address" placeholder="Enter your Address" value="<?php echo $_SESSION['address'] ?? ''; ?>" onchange="this.form.submit()">
+                            <div class="row">
+                                <div class="col-md-7">
+                                    <div class="mb-3">
+                                        <input type="text" class="form-control form-control-sm" name="address" placeholder="Enter your Address" value="<?php echo $_SESSION['address'] ?? ''; ?>" onchange="this.form.submit()">
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <select class="form-control form-control-sm" name="municipality" id="municipality" onchange="this.form.submit()" required>
+                                        <option value="" disabled <?php echo (!isset($_SESSION['municipality'])) ? 'selected' : ''; ?>>Select Municipality</option>
+                                        <?php
+                                        $query = "SELECT DISTINCT municipality FROM location";
+                                        $result = mysqli_query($conn, $query);
+
+                                        if ($result) {
+                                            while ($row = mysqli_fetch_assoc($result)) {
+                                                $selected = (isset($_SESSION['municipality']) && $_SESSION['municipality'] == $row['municipality']) ? 'selected' : '';
+                                                echo "<option value='" . $row['municipality'] . "' $selected>" . $row['municipality'] . "</option>";
+                                            }
+                                            mysqli_free_result($result);
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
                             </div>
                             <div class="mb-3">
                                 <input type="text" class="form-control form-control-sm" name="contact_number" placeholder="Enter your Contact Number" value="<?php echo $_SESSION['number'] ?? ''; ?>" onchange="this.form.submit()">
@@ -152,8 +176,8 @@
                     </div>
                 </div>
             </div>
-            <form action="./extension/checkoutproccess.php" method="POST">
-                <button type="submit" class="btn btn-outline-success m-3 float-end">Checkout</button>
+            <form action="./extension/checkoutnoaccountproccess.php" method="POST">
+                <button type="submit" name="checkout_no_acc" class="btn btn-outline-success m-3 float-end">Checkout</button>
             </form>
         </div>
     </div>

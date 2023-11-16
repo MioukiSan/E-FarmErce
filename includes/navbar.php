@@ -596,19 +596,19 @@ document.addEventListener("DOMContentLoaded", function() {
 
   if(isset($_POST['changedit'])) {
     $fname = $_POST['n_fullname'];
-    $em = $_POST['n_email'];
+    $em = $_POST['n_username'];
     $num = $_POST['n_number'];
     $add = $_POST['n_delivery_area'];
 
     if (!empty($_POST['new_pass'])) {
         $pass = $_POST['new_pass'];
         $enterInfo = "UPDATE users 
-                      SET fullname='$fname', email='$em', password='$pass', delivery_area='$add', number='$num'
+                      SET fullname='$fname', username='$em', password='$pass', delivery_area='$add', number='$num'
                       WHERE user_id='$user_id'"; 
 
     } else {
         $enterInfo = "UPDATE users 
-                      SET fullname='$fname', email='$em', delivery_area='$add', number='$num'
+                      SET fullname='$fname', username='$em', delivery_area='$add', number='$num'
                       WHERE user_id='$user_id'";
     }
 
@@ -638,8 +638,8 @@ document.addEventListener("DOMContentLoaded", function() {
               <input type="readonly" class="form-control" name="fullname" value="<?php echo $info['fullname'] ?>" readonly>
           </div>
           <div class="input-group input-group-sm mb-3">
-              <span class="input-group-text">EMAIL</span>
-              <input type="readonly" class="form-control" name="email" value="<?php echo $info['email'] ?>" readonly>
+              <span class="input-group-text">USERNAME</span>
+              <input type="readonly" class="form-control" name="username" value="<?php echo $info['username'] ?>" readonly>
           </div>
           <div class="input-group input-group-sm mb-3">
               <span class="input-group-text">CONTACT NUMBER</span>
@@ -680,8 +680,8 @@ document.addEventListener("DOMContentLoaded", function() {
               <input type="text" class="form-control" name="n_fullname" value="<?php echo $info['fullname'] ?>">
           </div>
           <div class="input-group input-group-sm  mb-3">
-              <span class="input-group-text">EMAIL</span>
-              <input type="text" class="form-control" name="n_email" value="<?php echo $info['email'] ?>">
+              <span class="input-group-text">USERNAME</span>
+              <input type="text" class="form-control" name="n_username" value="<?php echo $info['username'] ?>">
           </div>
           <div class="input-group input-group-sm  mb-3">
               <span class="input-group-text">CONTACT NUMBER</span>

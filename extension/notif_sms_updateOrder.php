@@ -21,13 +21,12 @@ if (isset($_POST['change_status'])) {
             $stmtNotif = $conn->prepare($sqlNotif);
             $stmtNotif->bind_param("iiss", $seller_id, $buyer_id, $mess, $ref);
 
-            if ($stmtNotif->execute()) {
                 $ch = curl_init();
                 $parameters = array(
                     'apikey' => 'a98eb9abe2636f1d3c09370d98663a40',
                     'number' => $number,
                     'message' => $messdate,
-                    'sendername' => ''
+                    'sendername' => 'EFarmErce'
                 );
 
                 curl_setopt($ch, CURLOPT_URL, 'https://semaphore.co/api/v4/messages');
@@ -51,9 +50,6 @@ if (isset($_POST['change_status'])) {
                 }
 
                 curl_close($ch);
-            } else {
-                echo "Error inserting notification: " . mysqli_error($conn);
-            }
         } else {
             $buyer_id = $_POST['buyer_id'];
             $seller_id = $_POST['seller_id'];
@@ -61,14 +57,13 @@ if (isset($_POST['change_status'])) {
             $stmtNotif = $conn->prepare($sqlNotif);
             $stmtNotif->bind_param("iiss", $seller_id, $buyer_id, $mess, $ref);
 
-            if ($stmtNotif->execute()) {
                 // Send SMS message after inserting the notification
                 $ch = curl_init();
                 $parameters = array(
                     'apikey' => 'a98eb9abe2636f1d3c09370d98663a40',
                     'number' => $number,
                     'message' => $mess,
-                    'sendername' => ''
+                    'sendername' => 'EFarmErce'
                 );
 
                 curl_setopt($ch, CURLOPT_URL, 'https://semaphore.co/api/v4/messages');
@@ -93,9 +88,6 @@ if (isset($_POST['change_status'])) {
                 }                    
 
                 curl_close($ch);
-            } else {
-                echo "Error inserting notification: " . mysqli_error($conn);
-            }
         }
     } elseif ($transact == 'Deliver') {
         if ($stat == 'Pending') {
@@ -110,14 +102,12 @@ if (isset($_POST['change_status'])) {
             $stmtNotif = $conn->prepare($sqlNotif);
             $stmtNotif->bind_param("iiss", $seller_id, $buyer_id, $messdate, $ref);
 
-            if ($stmtNotif->execute()) {
-                // Send SMS message after inserting the notification
                 $ch = curl_init();
                 $parameters = array(
                     'apikey' => 'a98eb9abe2636f1d3c09370d98663a40',
                     'number' => $number,
                     'message' => $messdate,
-                    'sendername' => ''
+                    'sendername' => 'EFarmErce'
                 );
 
                 curl_setopt($ch, CURLOPT_URL, 'https://semaphore.co/api/v4/messages');
@@ -142,22 +132,17 @@ if (isset($_POST['change_status'])) {
                 }
 
                 curl_close($ch);
-            } else {
-                echo "Error inserting notification: " . mysqli_error($conn);
-            }
         } else {
             $sqlNotif = "INSERT INTO notifications (seller_id, buyer_id, message, transact_code) VALUES (?, ?, ?, ?)";
             $stmtNotif = $conn->prepare($sqlNotif);
             $stmtNotif->bind_param("iiss", $seller_id, $buyer_id, $messdate, $ref);
 
-            if ($stmtNotif->execute()) {
-                // Send SMS message after inserting the notification
                 $ch = curl_init();
                 $parameters = array(
                     'apikey' => 'a98eb9abe2636f1d3c09370d98663a40',
                     'number' => $number,
                     'message' => $mess,
-                    'sendername' => ''
+                    'sendername' => 'EFarmErce'
                 );
 
                 curl_setopt($ch, CURLOPT_URL, 'https://semaphore.co/api/v4/messages');
@@ -182,9 +167,6 @@ if (isset($_POST['change_status'])) {
                 }
 
                 curl_close($ch);
-            } else {
-                echo "Error inserting notification: " . mysqli_error($conn);
-            }
         }
     }
 }

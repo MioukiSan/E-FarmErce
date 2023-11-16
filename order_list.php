@@ -96,7 +96,7 @@ $user_idS = $_SESSION['user_id'];
                                                     // Calculate and accumulate the total for each product in the order
                                                     $totalS += $rowO['order_total'];
                                                     $sellerId = $rowP['seller_id'];
-                                                    $sellerQuery = "SELECT fullname, address, selfie_id FROM users WHERE user_id = '$sellerId'";
+                                                    $sellerQuery = "SELECT fullname, address FROM users WHERE user_id = '$sellerId'";
                                                     
                                                     $sellerQueryResult = mysqli_query($conn, $sellerQuery);
                                                     $sellerRow = mysqli_fetch_assoc($sellerQueryResult);

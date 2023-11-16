@@ -11,11 +11,11 @@ if (isset($_POST['register'])) {
     $user_type = $_POST['usertype'];
     $username = $_POST['username'];
 
-    $check_query = "SELECT * FROM users WHERE number = '$number'";
+    $check_query = "SELECT * FROM users WHERE username = '$username' OR number = '$number'";
     $check_result = $conn->query($check_query);
 
     if ($check_result->num_rows > 0) {
-        echo "Number is already used. Please choose a different email or number.";
+        echo "<script>alert('Number or Username is already used. Please choose a different username or number.'); window.location.href = document.referrer;</script>";
         exit;
     }
 
