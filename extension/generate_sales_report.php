@@ -2,70 +2,75 @@
 require('../fpdf/FPDF.php');
 require_once '../includes/db.php';
 
-// Check if the form is submitted
-if (isset($_POST['viewlog'])) {
+$user_id = $_SESSION['user_id'];
+
+if (isset($_POST['view'])) {
+    $start = $_POST['start_date'];
+    $end = $_POST['end_date'];
+    $queryO = "SELECT * FROM orders WHERE DATE(date_place) BETWEEN '$start' AND '$end' AND seller_id = '$user_id'";
+    $queryR = mysqli_query($conn, $queryO);
+} else {
+    $this_date = $_POST['this_date'];
+    $queryO = "SELECT * FROM orders WHERE DATE(date_place) = '$this_date' AND seller_id = '$user_id'";
+    $queryR = mysqli_query($conn, $queryO);
+}
+
+// Check if there are order records
+if ($queryR) {
     // Initialize PDF
     $pdf = new FPDF('P', 'mm', 'A4');
     $pdf->AddPage();
 
-    // Set start and end dates
-    $start = $_POST['start_date'];
-    $end = $_POST['end_date'];
+    // Set font
+    $pdf->SetFont('Arial', 'B', 10);
 
-    // Employee attendance query
-    $attendanceSQL = "SELECT a.employee_id, a.date, a.attendance_status, e.fullname 
-    FROM attendance a
-    JOIN employee_management e ON e.employee_id = a.employee_id
-    WHERE a.date BETWEEN '$start' AND '$end'";
-
-    // Execute attendance query
-    $attendanceResult = mysqli_query($conn, $attendanceSQL);
-
-    // Check if there are attendance records
-    if ($attendanceResult) {
-        // Initialize PDF
-        $pdf = new FPDF('P', 'mm', 'A4');
-        $pdf->AddPage();
-
-        // Set font
-        $pdf->SetFont('Arial', 'B', 10);
-
-        // Header
-        $pdf->SetFont('Arial', 'B', 10);
-        $pdf->Cell(0, 1, 'E-FarmErce', 0, 1, 'C');
-        $pdf->SetFont('Arial', '', 8);
-        $pdf->Ln(8);
-        
-        $pdf->SetFont('Arial', 'B', 15);
-        $pdf->Cell(0, 5, 'Sales Report', 0, 1, 'C');
-        $pdf->SetFont('Arial', '', 10);
-        $pdf->Cell(0, 5, $start . ' - ' . $end, 0, 1, 'C');
-        $pdf->Ln(5);
-
-        // Table header
-        $pdf->SetFont('Arial', 'B', 12);
-        $pdf->SetFillColor(52, 162, 192);
-        $pdf->Cell(50, 10, 'DATE', 1, 0, 'C', true);
-        $pdf->Cell(80, 10, 'PRODUCT NAME', 1, 0, 'C', true);
-        $pdf->Cell(80, 10, 'ORDER DETAILS', 1, 0, 'C', true);
-        $pdf->Cell(50, 10, 'ATTENDANCE STATUS', 1, 1, 'C', true);
-
-        $pdf->SetFillColor(52, 162, 192);
-        $pdf->SetFont('Arial', '', 12);
-        while ($row = mysqli_fetch_assoc($attendanceResult)) {
-            $pdf->Cell(50, 10, $row['date'], 1, 0, 'C');
-            $pdf->Cell(80, 10, $row['fullname'],  1, 0, 'C');
-            $pdf->Cell(50, 10, $row['attendance_status'],  1, 1, 'C');
-        }
-
-        // Output the PDF
-        $pdf->Output();
+    // Header
+    $pdf->SetFont('Arial', 'B', 15);
+    $pdf->Cell(0, 5, 'E-FarmErce', 0, 1, 'C');
+    $pdf->SetFont('Arial', '', 8);
+    $pdf->SetFont('Arial', 'B', 10);
+    $pdf->Cell(0, 5, 'Sales Report', 0, 1, 'C');
+    $pdf->SetFont('Arial', '', 10);
+    if (isset($_POST['view'])) {
+    $pdf->Cell(0, 5, $start . ' - ' . $end, 0, 1, 'C');
     } else {
-        // Handle the case where there are no attendance records
-        echo "No attendance records found.";
+        $pdf->Cell(0, 5, 'DATE: ' . $this_date, 0, 1, 'C');
     }
+    $pdf->Ln(5);
+
+    // Table header
+    $pdf->SetFont('Arial', 'B', 10);
+    $pdf->SetFillColor(52, 162, 192);
+    $pdf->Cell(45, 10, 'ORDER REF.', 1, 0, 'C', true);
+    $pdf->Cell(40, 10, 'PRODUCT', 1, 0, 'C', true);
+    $pdf->Cell(55, 10, 'ORDER DETAILS', 1, 0, 'C', true);
+    $pdf->Cell(50, 10, 'BUYER', 1, 1, 'C', true);
+
+    $pdf->SetFillColor(52, 162, 192);
+    $pdf->SetFont('Arial', '', 10);
+
+    while ($orderInfoRow = mysqli_fetch_assoc($queryR)) {
+        $product_id = $orderInfoRow['product_id'];
+    
+        // Fetch product information using a prepared statement
+        $queryInfoProd = "SELECT * FROM products WHERE product_id = ?";
+        $stmt = mysqli_prepare($conn, $queryInfoProd);
+        mysqli_stmt_bind_param($stmt, 's', $product_id);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        $row = mysqli_fetch_assoc($result);
+    
+
+        $pdf->Cell(45, 10, $orderInfoRow['order_reference'], 1, 0, 'C');
+        $pdf->Cell(40, 10, $row['product_name'], 1, 0, 'C');
+        $pdf->Cell(55, 10, 'ORDER QTY: ' . $orderInfoRow['order_qty'] . "\n" . 'ORDER TOTAL: ' . $orderInfoRow['order_total'], 1, 0, 'C');
+        $pdf->Cell(50, 10, $orderInfoRow['date_place'], 1, 1, 'C');
+    }
+    
+    // Output the PDF
+    $pdf->Output();
 } else {
-    // Handle the case where the form is not submitted
-    echo "Form not submitted.";
+    // Handle the case where there are no order records
+    echo "No order records found.";
 }
 ?>
