@@ -86,7 +86,7 @@ if ($queryR) {
     $pdf->SetFillColor(192, 192, 192);
     $pdf->SetFont('Arial', 'B', 9);
     $pdf->Cell(163, 8, 'Total Sales', 1, 0, 'C', true);
-    $pdf->Cell(27, 8, CURRENCY . number_format($totalSales, 2), 1, 1, 'C', true);
+    $pdf->Cell(27, 8, CURRENCY . number_format($totalSales, 2), 1, 1, 'R', true);
     // Output the PDF
     $pdf->Output();
 } else {

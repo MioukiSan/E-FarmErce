@@ -205,7 +205,7 @@
                                 </div>
                             </form>
                             <form action="" method="POST">
-                                <div class="input-group mb-3">
+                                <div class="input-group">
                                     <span class="input-group-text">This Date</span>
                                     <input type="date" name="this_date" class="form-control" required>
                                     <button type="submit" class="text-center btn btn-secondary" name="generatefi1">GENERATE</button>
