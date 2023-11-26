@@ -11,13 +11,6 @@
         $stmt->bind_param("ii", $cartId, $user_id);
 
         if ($stmt->execute()) {
-            // Cart item deleted successfully
-            // Now, open the offcanvas with ID 'offcanvasright'
-            echo "Cart item deleted successfully";
-            echo "<script>
-                    document.getElementById('offcanvasright').classList.add('show');
-                  </script>";
-
             // Redirect back to the previous page
             header("Location: " . $_SERVER['HTTP_REFERER']);
             exit;
@@ -29,4 +22,10 @@
     } else {
         echo "Error: Statement preparation failed.";
     }
+
+    // Output should come after header() to avoid "headers already sent" warning
+    echo "Cart item deleted successfully";
+    echo "<script>
+            document.getElementById('offcanvasright').classList.add('show');
+          </script>";
 ?>

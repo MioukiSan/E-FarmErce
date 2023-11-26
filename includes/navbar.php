@@ -10,19 +10,30 @@
     }else{
         $user_id = 0;
     }
-    if(isset($_GET['cart_delete'])) {
+    if (isset($_GET['cart_delete'])) {
       $user_id = $_GET['user_id'];
       $cartId = $_GET['cart_id'];
-  ?>
-      <script>
+    
+      $sql = "SELECT * FROM cart WHERE user_id = ? AND cart_id = ?";
+      $stmt = $conn->prepare($sql);
+      $stmt->bind_param('ii', $user_id, $cartId);
+      $stmt->execute();
+      $result = $stmt->get_result();
+    
+      // Check if the item is found and not deleted
+      if ($result->num_rows > 0) {
+    ?>
+        <script>
           var confirmed = confirm("Are you sure you want to delete this item from your cart?");
           if (confirmed) {
-              window.location.href = "./extension/delete_cart.php?user_id=<?php echo $user_id; ?>&cart_id=<?php echo $cartId; ?>";
+            window.location.href = "./extension/delete_cart.php?user_id=<?php echo $user_id; ?>&cart_id=<?php echo $cartId; ?>";
           } else {
+            // Add any additional logic if needed
           }
-      </script>
-  <?php
-  }
+        </script>
+    <?php
+      }
+    }    
 
   $query1 = "SELECT COUNT(*) AS count FROM cart WHERE user_id = $user_id";
   $res = mysqli_query($conn, $query1);
