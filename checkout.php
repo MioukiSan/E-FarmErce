@@ -247,16 +247,28 @@
                 endforeach;
                 ?>
             </div>
-            <form action="./extension/checkoutproccess.php" method="POST">
-            <?php 
-                foreach($selectedProducts as $ids){
-            ?>
-                <input type="hidden" name="selected_products[]" value="<?php echo $ids ?>">
-            <?php } ?>
-            <input type="hidden" name="user_id" value="<?php echo $_SESSION['user_id'] ?>">
-            <button type="submit" class="btn btn-outline-success">Checkout</button>
+            <form action="./extension/checkoutproccess.php" method="POST" id="checkoutForm" onsubmit="return submitForm()">
+                <?php foreach ($selectedProducts as $ids) { ?>
+                    <input type="hidden" name="selected_products[]" value="<?php echo $ids ?>">
+                <?php } ?>
+                <input type="hidden" name="user_id" value="<?php echo $_SESSION['user_id'] ?>">
+                <button type="submit" class="btn btn-outline-success">Checkout</button>
             </form>
         </div>
     </div>
 </body>
+<script>
+    function submitForm() {
+        var selectedMode = document.getElementsByName('transact')[0].value;
+
+        // Check if selected_mode is empty or null
+        if (selectedMode === '' || selectedMode === null) {
+            alert('Please select a transaction method before checkout.');
+            return false; // Prevent form submission
+        }
+
+        // If everything is fine, allow the form submission
+        return true;
+    }
+</script>
 </html> 

@@ -138,7 +138,7 @@
                         <h3>BILLING DETAILS</h3>
                         <form action="" method="POST">
                             <div class="mb-3">
-                                <input type="text" class="form-control form-control-sm" name="name" placeholder="Enter your name" value="<?php echo $_SESSION['name'] ?? ''; ?>" onchange="this.form.submit()">
+                                <input type="text" class="form-control form-control-sm" name="name" placeholder="Enter your name" value="<?php echo $_SESSION['name'] ?? ''; ?>" onchange="this.form.submit()" requred>
                             </div>
                             <div class="row">
                                 <div class="col-md-7">
